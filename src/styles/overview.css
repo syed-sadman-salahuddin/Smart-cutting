@@ -139,7 +139,6 @@ html.dark .chart-grid { stroke: #374151; }
 html.dark .chart-label { fill: #6b7280; }
 html.dark .chart-dot { stroke: #1f2937; }
 
-/* small label that follows the mouse (my own design – not in the original HTML) */
 .chart-tooltip {
   position: absolute;
   transform: translate(-50%, -140%);

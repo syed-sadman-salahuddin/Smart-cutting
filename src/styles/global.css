@@ -9,7 +9,6 @@ svg { display: block; }
 
 /* ---------- Theme variables ---------- */
 :root {
-  /* set from JS (utils/theme.js); these are only fallbacks */
   --color-primary: rgb(6, 182, 212);
   --color-secondary: rgb(8, 145, 178);
   --color-primary-rgb: 6 182 212;

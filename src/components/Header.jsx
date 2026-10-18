@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Menu, Palette, Languages, Moon, Sun, Maximize, Minimize, ChevronDown,
   Check, Sparkles, RotateCcw, User, Settings, FileDown, LogOut,
@@ -15,18 +16,16 @@ const LANGUAGES = [
   { code: 'en', label: 'English' },
   { code: 'bn', label: 'বাংলা' },
 ];
-const LANG_KEY = 'st-language';
 
 export default function Header({ onOpenMobileSidebar }) {
+  const { i18n } = useTranslation();
   // which dropdown is open: 'appearance' | 'language' | 'notifications' | 'user' | null
   const [openMenu, setOpenMenu] = useState(null);
   const [appearance, setAppearance] = useState(loadAppearance);
   const [appearanceTab, setAppearanceTab] = useState('color');
   const [roundedCategory, setRoundedCategory] = useState('button');
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [language, setLanguage] = useState(() => {
-    try { return localStorage.getItem(LANG_KEY) || 'en'; } catch { return 'en'; }
-  });
+  const language = i18n.resolvedLanguage || i18n.language;
 
   const toggleMenu = (name) => setOpenMenu((cur) => (cur === name ? null : name));
 
@@ -65,8 +64,7 @@ export default function Header({ onOpenMobileSidebar }) {
   };
 
   const chooseLanguage = (code) => {
-    setLanguage(code);
-    try { localStorage.setItem(LANG_KEY, code); } catch { /* ignore */ }
+    i18n.changeLanguage(code);
     setOpenMenu(null);
   };
 

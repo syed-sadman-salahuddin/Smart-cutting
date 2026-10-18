@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Search, X } from 'lucide-react';
 import { menuGroups } from '../data/menuData';
 import { currentUser } from '../data/user';
 import '../styles/sidebar.css';
 
 // Keeps only the menu items that match what was typed in the search box
-function filterMenu(groups, query) {
+function filterMenu(groups, query, t) {
   const q = query.trim().toLowerCase();
   if (!q) return groups;
 
@@ -14,9 +15,11 @@ function filterMenu(groups, query) {
     .map((group) => {
       const items = group.items
         .map((item) => {
-          if (item.label.toLowerCase().includes(q)) return item;
+          if (t(`sidebar.items.${item.label}`).toLowerCase().includes(q)) return item;
           if (item.children) {
-            const children = item.children.filter((c) => c.label.toLowerCase().includes(q));
+            const children = item.children.filter((child) =>
+              t(`sidebar.items.${child.label}`).toLowerCase().includes(q)
+            );
             if (children.length) return { ...item, children };
           }
           return null;
@@ -40,6 +43,7 @@ function getActiveMenus(pathname) {
 
 export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onCloseMobile }) {
   const { pathname } = useLocation();
+  const { t, i18n } = useTranslation();
   const [query, setQuery] = useState('');
   const [openMenus, setOpenMenus] = useState(() => getActiveMenus(pathname));
 
@@ -51,7 +55,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
   }, [pathname]);
 
   const isSearching = query.trim() !== '';
-  const visibleGroups = useMemo(() => filterMenu(menuGroups, query), [query]);
+  const visibleGroups = useMemo(() => filterMenu(menuGroups, query, t), [i18n.language, query, t]);
 
   const toggleMenu = (id) =>
     setOpenMenus((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -62,7 +66,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
       <button
         id="sidebarToggleBtn"
         className="sidebar-toggle"
-        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        title={collapsed ? t('sidebar.expandSidebar') : t('sidebar.collapseSidebar')}
         onClick={onToggleCollapse}
       >
         <i className={`fa-solid ${collapsed ? 'fa-chevron-right' : 'fa-chevron-left'}`} />
@@ -74,9 +78,13 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
           <div className="brand-logo">
             <i className="fa-solid fa-microchip" />
           </div>
-          <span className="sidebar-text brand-name">Smart Cutting</span>
+          <span className="sidebar-text brand-name">{t('sidebar.brand')}</span>
         </Link>
-        <button className="sidebar-close-mobile" onClick={onCloseMobile} aria-label="Close sidebar">
+        <button
+          className="sidebar-close-mobile"
+          onClick={onCloseMobile}
+          aria-label={t('sidebar.closeSidebar')}
+        >
           <i className="fa-solid fa-xmark" />
         </button>
       </div>
@@ -92,12 +100,16 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
             type="text"
             autoComplete="off"
             className="search-input"
-            placeholder="Search menu..."
+            placeholder={t('sidebar.searchPlaceholder')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           {query && (
-            <button className="search-clear" onClick={() => setQuery('')} aria-label="Clear search">
+            <button
+              className="search-clear"
+              onClick={() => setQuery('')}
+              aria-label={t('sidebar.clearSearch')}
+            >
               <X size={16} />
             </button>
           )}
@@ -110,7 +122,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
           {visibleGroups.map((group) => (
             <div className="nav-group" key={group.title}>
               <div className="sidebar-text nav-group-title">
-                <p>{group.title}</p>
+                <p>{t(`sidebar.groups.${group.title}`)}</p>
               </div>
 
               <div className="nav-items">
@@ -127,7 +139,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                         className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
                       >
                         <Icon size={18} className="nav-icon" />
-                        <span className="sidebar-text nav-label">{item.label}</span>
+                        <span className="sidebar-text nav-label">{t(`sidebar.items.${item.label}`)}</span>
                       </NavLink>
                     );
                   }
@@ -143,7 +155,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                         onClick={() => toggleMenu(item.id)}
                       >
                         <Icon size={18} className="nav-icon" />
-                        <span className="sidebar-text nav-label">{item.label}</span>
+                        <span className="sidebar-text nav-label">{t(`sidebar.items.${item.label}`)}</span>
                         <i className={`menu-arrow sidebar-text fa-solid fa-chevron-right${isOpen ? ' open' : ''}`} />
                       </button>
 
@@ -155,7 +167,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                               to={child.path}
                               className={({ isActive }) => `submenu-link${isActive ? ' active' : ''}`}
                             >
-                              {child.label}
+                              {t(`sidebar.items.${child.label}`)}
                             </NavLink>
                           ))}
                         </div>
@@ -168,7 +180,9 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
           ))}
         </div>
 
-        {visibleGroups.length === 0 && <p className="sidebar-no-results">No results found</p>}
+        {visibleGroups.length === 0 && (
+          <p className="sidebar-no-results">{t('sidebar.noResults')}</p>
+        )}
       </nav>
 
       {/* logged-in user at the bottom */}
@@ -178,7 +192,9 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
             <i className="fa-solid fa-shield-halved" />
           </div>
           <div className="sidebar-text profile-info">
-            <p className="profile-name">{currentUser.name}</p>
+            <p className="profile-name">
+              {i18n.resolvedLanguage === 'bn' ? t('sidebar.profile.name') : currentUser.name}
+            </p>
             <p className="profile-email">{currentUser.email}</p>
           </div>
         </div>
