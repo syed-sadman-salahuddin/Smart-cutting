@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ChartSpline } from 'lucide-react';
-import { userGrowth } from '../../data/overviewData';
 
 // The chart is drawn on a 640 x 240 canvas and then scaled to fit the card
 const W = 640;
@@ -10,16 +9,6 @@ const RIGHT = 620;
 const TOP = 8;
 const BOTTOM = 208;
 
-const points = userGrowth.values.map((value, i) => ({
-  value,
-  label: userGrowth.months[i],
-  x: LEFT + (i * (RIGHT - LEFT)) / (userGrowth.values.length - 1),
-  y: BOTTOM - (value / userGrowth.max) * (BOTTOM - TOP),
-}));
-
-const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x},${p.y}`).join(' ');
-const areaPath = `${linePath} L ${RIGHT},${BOTTOM} L ${LEFT},${BOTTOM} Z`;
-
 // horizontal grid lines + the numbers on the left
 const ticks = [
   { y: 8, label: '2000' },
@@ -27,7 +16,22 @@ const ticks = [
   { y: 208, label: '0' },
 ];
 
-export default function UserGrowthChart() {
+// turns { max, months, values } into x/y positions and the SVG line + area
+function buildChart({ max, months, values }) {
+  const steps = Math.max(values.length - 1, 1);
+  const points = values.map((value, i) => ({
+    value,
+    label: months[i],
+    x: LEFT + (i * (RIGHT - LEFT)) / steps,
+    y: BOTTOM - (value / max) * (BOTTOM - TOP),
+  }));
+  const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x},${p.y}`).join(' ');
+  const areaPath = `${linePath} L ${RIGHT},${BOTTOM} L ${LEFT},${BOTTOM} Z`;
+  return { points, linePath, areaPath };
+}
+
+export default function UserGrowthChart({ data }) {
+  const { points, linePath, areaPath } = useMemo(() => buildChart(data), [data]);
   const [hover, setHover] = useState(null); // index of the point under the mouse
   const last = points[points.length - 1];
   const active = hover === null ? null : points[hover];
@@ -79,7 +83,9 @@ export default function UserGrowthChart() {
             <path d={linePath} fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 
             {/* dot on the newest value */}
-            <circle cx={last.x} cy={last.y} r="4" fill="var(--color-primary)" className="chart-dot" strokeWidth="2" />
+            {last && (
+              <circle cx={last.x} cy={last.y} r="4" fill="var(--color-primary)" className="chart-dot" strokeWidth="2" />
+            )}
 
             {/* dot on the hovered value */}
             {active && (

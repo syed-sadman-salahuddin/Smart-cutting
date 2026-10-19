@@ -1,12 +1,12 @@
 import { createRoot } from 'react-dom/client';
 import './styles/global.css';
-import './i18n';
+import './translations/i18n'; // must load before the app: sets up the English / Bangla texts
 import { applyAppearance, loadAppearance } from './utils/theme';
-import { seedCredentials } from './utils/auth';
+import { initDatabase } from './services/database';
 import App from './App';
 
 applyAppearance(loadAppearance());
 
-seedCredentials();
+initDatabase();
 
 createRoot(document.getElementById('root')).render(<App />);

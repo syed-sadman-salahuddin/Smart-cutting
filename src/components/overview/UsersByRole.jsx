@@ -1,9 +1,7 @@
 import { ChartNoAxesColumn } from 'lucide-react';
-import { usersByRole } from '../../data/overviewData';
 
-export default function UsersByRole() {
-  // the biggest count fills 100% of the bar, the others are relative to it
-  const max = Math.max(...usersByRole.map((r) => r.count));
+export default function UsersByRole({ items }) {
+  const max = Math.max(1, ...items.map((r) => r.count));
 
   return (
     <div className="panel span-2">
@@ -16,7 +14,7 @@ export default function UsersByRole() {
 
       <div className="panel-body">
         <div className="role-list">
-          {usersByRole.map((item) => (
+          {items.map((item) => (
             <div className="role-group" key={item.role}>
               <div className="role-row">
                 <span className="role-name">{item.role}</span>

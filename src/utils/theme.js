@@ -34,11 +34,24 @@ export const ROUNDED_OPTIONS = [
 
 export const DEFAULT_APPEARANCE = {
   mode: 'light',
-  color: 'cyan',
+  color: 'emerald',
   rounded: { button: 'sm', input: 'sm', card: 'sm' },
 };
 
 const STORAGE_KEY = 'st-appearance';
+
+function toHexColor([red, green, blue]) {
+  return `#${[red, green, blue].map((channel) => channel.toString(16).padStart(2, '0')).join('')}`;
+}
+
+function updateFavicon(theme) {
+  const favicon = document.querySelector('link[rel="icon"]');
+  if (!favicon) return;
+
+  const [primary, secondary] = [theme.primary, theme.secondary].map(toHexColor);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><defs><linearGradient id="brand" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${primary}"/><stop offset="1" stop-color="${secondary}"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#brand)"/><g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"><path d="M11 9V6m5 3V5m5 4V6m-10 17v3m5-3v4m5-4v3M9 11H6m3 5H5m4 5H6m17-10h3m-3 5h4m-4 5h3"/><rect x="9" y="9" width="14" height="14" rx="2"/><rect x="13" y="13" width="6" height="6" rx="1"/></g></svg>`;
+  favicon.href = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
 
 export function loadAppearance() {
   try {
@@ -73,6 +86,7 @@ export function applyAppearance(appearance) {
   root.style.setProperty('--color-secondary', `rgb(${theme.secondary.join(', ')})`);
   root.style.setProperty('--color-primary-rgb', theme.primary.join(' '));
   root.style.setProperty('--color-secondary-rgb', theme.secondary.join(' '));
+  updateFavicon(theme);
 
   ROUNDED_CATEGORIES.forEach((cat) => {
     const option = ROUNDED_OPTIONS.find((o) => o.id === appearance.rounded[cat.id]);

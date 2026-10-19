@@ -8,7 +8,6 @@ import {
   Download,
 } from 'lucide-react';
 
-// One object per sidebar group. An item with "children" becomes an expandable menu.
 export const menuGroups = [
   {
     title: 'Workspace',

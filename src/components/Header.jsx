@@ -5,7 +5,7 @@ import {
   Menu, Palette, Languages, Moon, Sun, Maximize, Minimize, ChevronDown,
   Check, Sparkles, RotateCcw, User, Settings, FileDown, LogOut,
 } from 'lucide-react';
-import { currentUser } from '../data/user';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 import {
   COLOR_THEMES, ROUNDED_CATEGORIES, ROUNDED_OPTIONS, DEFAULT_APPEARANCE,
   loadAppearance, saveAppearance, applyAppearance,
@@ -18,14 +18,17 @@ const LANGUAGES = [
 ];
 
 export default function Header({ onOpenMobileSidebar }) {
-  const { i18n } = useTranslation();
+  const currentUser = useCurrentUser();
+  const { t, i18n } = useTranslation();
   // which dropdown is open: 'appearance' | 'language' | 'notifications' | 'user' | null
   const [openMenu, setOpenMenu] = useState(null);
   const [appearance, setAppearance] = useState(loadAppearance);
   const [appearanceTab, setAppearanceTab] = useState('color');
   const [roundedCategory, setRoundedCategory] = useState('button');
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const language = i18n.resolvedLanguage || i18n.language;
+
+  // the active language comes from i18next (saved in localStorage by translations/i18n.js)
+  const language = i18n.language?.startsWith('bn') ? 'bn' : 'en';
 
   const toggleMenu = (name) => setOpenMenu((cur) => (cur === name ? null : name));
 
@@ -63,6 +66,7 @@ export default function Header({ onOpenMobileSidebar }) {
     else document.documentElement.requestFullscreen?.();
   };
 
+  // switches the whole app language (i18next also saves it)
   const chooseLanguage = (code) => {
     i18n.changeLanguage(code);
     setOpenMenu(null);
@@ -72,14 +76,14 @@ export default function Header({ onOpenMobileSidebar }) {
 
   return (
     <header id="header" className="header">
-      <button className="icon-btn mobile-menu-btn" onClick={onOpenMobileSidebar} aria-label="Open sidebar">
+      <button className="icon-btn mobile-menu-btn" onClick={onOpenMobileSidebar} aria-label={t('header.openSidebar')}>
         <Menu size={18} />
       </button>
 
       <div className="header-actions">
         {/* ---------- Appearance (palette) ---------- */}
         <div className="menu-root" data-menu-root>
-          <button className="icon-btn" title="Appearance" onClick={() => toggleMenu('appearance')}>
+          <button className="icon-btn" title={t('header.appearance')} onClick={() => toggleMenu('appearance')}>
             <Palette size={18} />
             <span className="appearance-dot" />
           </button>
@@ -90,13 +94,13 @@ export default function Header({ onOpenMobileSidebar }) {
                 <div>
                   <div className="ap-title">
                     <Sparkles size={12} className="ap-sparkle" />
-                    <h3>Appearance</h3>
+                    <h3>{t('appearance.title')}</h3>
                   </div>
-                  <p>Customize your dashboard look &amp; feel</p>
+                  <p>{t('appearance.subtitle')}</p>
                 </div>
                 <button
                   className="ap-reset"
-                  title="Reset appearance"
+                  title={t('appearance.reset')}
                   onClick={() => setAppearance((a) => ({ ...DEFAULT_APPEARANCE, mode: a.mode }))}
                 >
                   <RotateCcw size={14} />
@@ -109,13 +113,13 @@ export default function Header({ onOpenMobileSidebar }) {
                     className={`ap-tab${appearanceTab === 'color' ? ' active' : ''}`}
                     onClick={() => setAppearanceTab('color')}
                   >
-                    Color Theme
+                    {t('appearance.tabColor')}
                   </button>
                   <button
                     className={`ap-tab${appearanceTab === 'rounded' ? ' active' : ''}`}
                     onClick={() => setAppearanceTab('rounded')}
                   >
-                    Rounded Style
+                    {t('appearance.tabRounded')}
                   </button>
                 </div>
               </div>
@@ -135,7 +139,7 @@ export default function Header({ onOpenMobileSidebar }) {
                           onClick={() => setAppearance((a) => ({ ...a, color: theme.id }))}
                         >
                           <div className="ap-swatch" style={{ background: `linear-gradient(135deg, rgb(${p}) 0%, rgb(${s}) 100%)` }} />
-                          <span className="ap-label">{theme.name}</span>
+                          <span className="ap-label">{t(`appearance.themes.${theme.id}`, { defaultValue: theme.name })}</span>
                           {selected && (
                             <div className="ap-check" style={{ background: `rgb(${p})` }}>
                               <Check size={10} color="#fff" />
@@ -155,7 +159,7 @@ export default function Header({ onOpenMobileSidebar }) {
                         className={`ap-tab${roundedCategory === cat.id ? ' active' : ''}`}
                         onClick={() => setRoundedCategory(cat.id)}
                       >
-                        {cat.label}
+                        {t(`appearance.categories.${cat.id}`, { defaultValue: cat.label })}
                       </button>
                     ))}
                   </div>
@@ -171,7 +175,7 @@ export default function Header({ onOpenMobileSidebar }) {
                           }
                         >
                           <div className="ap-rounded-preview" style={{ borderRadius: opt.value }} />
-                          <span className="ap-label">{opt.label}</span>
+                          <span className="ap-label">{t(`appearance.rounded.${opt.id}`, { defaultValue: opt.label })}</span>
                           {selected && (
                             <div className="ap-check ap-check-neutral">
                               <Check size={10} />
@@ -189,7 +193,7 @@ export default function Header({ onOpenMobileSidebar }) {
 
         {/* ---------- Language ---------- */}
         <div className="menu-root" data-menu-root>
-          <button className="icon-btn" title="Language" onClick={() => toggleMenu('language')}>
+          <button className="icon-btn" title={t('header.language')} onClick={() => toggleMenu('language')}>
             <Languages size={18} />
           </button>
           {openMenu === 'language' && (
@@ -213,31 +217,31 @@ export default function Header({ onOpenMobileSidebar }) {
         {/* ---------- Dark / light ---------- */}
         <button
           className="icon-btn"
-          title="Toggle theme"
+          title={t('header.toggleTheme')}
           onClick={() => setAppearance((a) => ({ ...a, mode: a.mode === 'dark' ? 'light' : 'dark' }))}
         >
           {isDark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
 
         {/* ---------- Fullscreen ---------- */}
-        <button className="icon-btn" title="Toggle fullscreen" onClick={toggleFullscreen}>
+        <button className="icon-btn" title={t('header.toggleFullscreen')} onClick={toggleFullscreen}>
           {isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}
         </button>
 
         {/* ---------- Notifications ---------- */}
         <div className="menu-root" data-menu-root>
-          <button className="icon-btn" title="Notifications" onClick={() => toggleMenu('notifications')}>
+          <button className="icon-btn" title={t('header.notifications')} onClick={() => toggleMenu('notifications')}>
             <i className="fa-solid fa-bell" />
           </button>
           {openMenu === 'notifications' && (
             <div className="dropdown dropdown-wide">
               <div className="notif-head">
-                <h3>Notifications</h3>
-                <p>0 unread</p>
+                <h3>{t('notifications.title')}</h3>
+                <p>{t('notifications.unread', { count: 0 })}</p>
               </div>
-              <div className="notif-empty">No notifications yet</div>
+              <div className="notif-empty">{t('notifications.empty')}</div>
               <div className="notif-foot">
-                <Link to="/notifications/" onClick={() => setOpenMenu(null)}>View All Notifications</Link>
+                <Link to="/notifications/" onClick={() => setOpenMenu(null)}>{t('notifications.viewAll')}</Link>
               </div>
             </div>
           )}
@@ -266,17 +270,17 @@ export default function Header({ onOpenMobileSidebar }) {
               </div>
               <div className="menu-list">
                 <Link to="/superuser/" className="menu-item" onClick={() => setOpenMenu(null)}>
-                  <User size={16} /> Profile
+                  <User size={16} /> {t('header.profile')}
                 </Link>
                 <Link to="/settings/" className="menu-item" onClick={() => setOpenMenu(null)}>
-                  <Settings size={16} /> Settings
+                  <Settings size={16} /> {t('header.settings')}
                 </Link>
                 <Link to="/download/" className="menu-item" onClick={() => setOpenMenu(null)}>
-                  <FileDown size={16} /> Download
+                  <FileDown size={16} /> {t('header.download')}
                 </Link>
                 <div className="menu-sep" />
                 <Link to="/logout/" className="menu-item menu-item-danger" onClick={() => setOpenMenu(null)}>
-                  <LogOut size={16} /> Logout
+                  <LogOut size={16} /> {t('header.logout')}
                 </Link>
               </div>
             </div>

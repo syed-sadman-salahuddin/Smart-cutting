@@ -3,23 +3,22 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Search, X } from 'lucide-react';
 import { menuGroups } from '../data/menuData';
-import { currentUser } from '../data/user';
+import { useCurrentUser } from '../hooks/useCurrentUser';
 import '../styles/sidebar.css';
 
-// Keeps only the menu items that match what was typed in the search box
-function filterMenu(groups, query, t) {
+function filterMenu(groups, query, show) {
   const q = query.trim().toLowerCase();
   if (!q) return groups;
+  const matches = (label) =>
+    label.toLowerCase().includes(q) || show(label).toLowerCase().includes(q);
 
   return groups
     .map((group) => {
       const items = group.items
         .map((item) => {
-          if (t(`sidebar.items.${item.label}`).toLowerCase().includes(q)) return item;
+          if (matches(item.label)) return item;
           if (item.children) {
-            const children = item.children.filter((child) =>
-              t(`sidebar.items.${child.label}`).toLowerCase().includes(q)
-            );
+            const children = item.children.filter((c) => matches(c.label));
             if (children.length) return { ...item, children };
           }
           return null;
@@ -30,7 +29,6 @@ function filterMenu(groups, query, t) {
     .filter((group) => group.items.length > 0);
 }
 
-// Ids of the expandable menus that contain the page we are currently on
 function getActiveMenus(pathname) {
   const ids = [];
   menuGroups.forEach((group) =>
@@ -42,31 +40,36 @@ function getActiveMenus(pathname) {
 }
 
 export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onCloseMobile }) {
-  const { pathname } = useLocation();
+  const currentUser = useCurrentUser();
   const { t, i18n } = useTranslation();
+  const { pathname } = useLocation();
   const [query, setQuery] = useState('');
   const [openMenus, setOpenMenus] = useState(() => getActiveMenus(pathname));
 
-  // When the page changes: open the menu that owns it, and close the mobile sidebar
+  const showItem = (label) => t(`sidebar.items.${label}`, { defaultValue: label });
+  const showGroup = (title) => t(`sidebar.groups.${title}`, { defaultValue: title });
+
   useEffect(() => {
     setOpenMenus((prev) => [...new Set([...prev, ...getActiveMenus(pathname)])]);
     onCloseMobile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const isSearching = query.trim() !== '';
-  const visibleGroups = useMemo(() => filterMenu(menuGroups, query, t), [i18n.language, query, t]);
+  const visibleGroups = useMemo(
+    () => filterMenu(menuGroups, query, showItem),
+    [query, i18n.language]
+  );
 
   const toggleMenu = (id) =>
     setOpenMenus((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
   return (
     <aside id="sidebar" className={`sidebar${mobileOpen ? ' mobile-open' : ''}`}>
-      {/* round collapse button on the sidebar's right edge */}
+      {}
       <button
         id="sidebarToggleBtn"
         className="sidebar-toggle"
-        title={collapsed ? t('sidebar.expandSidebar') : t('sidebar.collapseSidebar')}
+        title={collapsed ? t('sidebar.expand') : t('sidebar.collapse')}
         onClick={onToggleCollapse}
       >
         <i className={`fa-solid ${collapsed ? 'fa-chevron-right' : 'fa-chevron-left'}`} />
@@ -78,13 +81,9 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
           <div className="brand-logo">
             <i className="fa-solid fa-microchip" />
           </div>
-          <span className="sidebar-text brand-name">{t('sidebar.brand')}</span>
+          <span className="sidebar-text brand-name">{t('sidebar.brand', { defaultValue: 'Smart Cutting' })}</span>
         </Link>
-        <button
-          className="sidebar-close-mobile"
-          onClick={onCloseMobile}
-          aria-label={t('sidebar.closeSidebar')}
-        >
+        <button className="sidebar-close-mobile" onClick={onCloseMobile} aria-label={t('sidebar.closeSidebar')}>
           <i className="fa-solid fa-xmark" />
         </button>
       </div>
@@ -100,16 +99,12 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
             type="text"
             autoComplete="off"
             className="search-input"
-            placeholder={t('sidebar.searchPlaceholder')}
+            placeholder={t('sidebar.searchPlaceholder', { defaultValue: 'Search menu...' })}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           {query && (
-            <button
-              className="search-clear"
-              onClick={() => setQuery('')}
-              aria-label={t('sidebar.clearSearch')}
-            >
+            <button className="search-clear" onClick={() => setQuery('')} aria-label={t('sidebar.clearSearch')}>
               <X size={16} />
             </button>
           )}
@@ -122,7 +117,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
           {visibleGroups.map((group) => (
             <div className="nav-group" key={group.title}>
               <div className="sidebar-text nav-group-title">
-                <p>{t(`sidebar.groups.${group.title}`)}</p>
+                <p>{showGroup(group.title)}</p>
               </div>
 
               <div className="nav-items">
@@ -139,12 +134,11 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                         className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
                       >
                         <Icon size={18} className="nav-icon" />
-                        <span className="sidebar-text nav-label">{t(`sidebar.items.${item.label}`)}</span>
+                        <span className="sidebar-text nav-label">{showItem(item.label)}</span>
                       </NavLink>
                     );
                   }
 
-                  // 2) expandable menu with sub-links
                   const isOpen = isSearching || openMenus.includes(item.id);
                   return (
                     <div className="menu-group" key={item.id}>
@@ -155,7 +149,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                         onClick={() => toggleMenu(item.id)}
                       >
                         <Icon size={18} className="nav-icon" />
-                        <span className="sidebar-text nav-label">{t(`sidebar.items.${item.label}`)}</span>
+                        <span className="sidebar-text nav-label">{showItem(item.label)}</span>
                         <i className={`menu-arrow sidebar-text fa-solid fa-chevron-right${isOpen ? ' open' : ''}`} />
                       </button>
 
@@ -167,7 +161,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                               to={child.path}
                               className={({ isActive }) => `submenu-link${isActive ? ' active' : ''}`}
                             >
-                              {t(`sidebar.items.${child.label}`)}
+                              {showItem(child.label)}
                             </NavLink>
                           ))}
                         </div>
@@ -180,24 +174,20 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
           ))}
         </div>
 
-        {visibleGroups.length === 0 && (
-          <p className="sidebar-no-results">{t('sidebar.noResults')}</p>
-        )}
+        {visibleGroups.length === 0 && <p className="sidebar-no-results">{t('sidebar.noResults')}</p>}
       </nav>
 
       {/* logged-in user at the bottom */}
       <div className="sidebar-footer">
-        <div className="profile-row">
+        <Link to="/superuser/" className="profile-row" title={currentUser.name}>
           <div className="profile-avatar">
             <i className="fa-solid fa-shield-halved" />
           </div>
           <div className="sidebar-text profile-info">
-            <p className="profile-name">
-              {i18n.resolvedLanguage === 'bn' ? t('sidebar.profile.name') : currentUser.name}
-            </p>
+            <p className="profile-name">{currentUser.name}</p>
             <p className="profile-email">{currentUser.email}</p>
           </div>
-        </div>
+        </Link>
       </div>
     </aside>
   );

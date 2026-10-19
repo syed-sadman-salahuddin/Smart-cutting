@@ -1,6 +1,9 @@
 import { TrendingUp } from 'lucide-react';
-import { currentUser } from '../data/user';
-import { overviewStats } from '../data/overviewData';
+import { KEYS } from '../services/storage';
+import { useStorage } from '../hooks/useStorage';
+import { useCurrentUser } from '../hooks/useCurrentUser';
+import { dashboardSeed } from '../data/seedData';
+import { statConfig } from '../data/overviewData';
 import StatCard from '../components/overview/StatCard';
 import UserGrowthChart from '../components/overview/UserGrowthChart';
 import UsersByRole from '../components/overview/UsersByRole';
@@ -16,6 +19,13 @@ function getGreeting() {
 }
 
 export default function Overview() {
+  const currentUser = useCurrentUser();
+  // all dashboard numbers come from localStorage ("st-dashboard")
+  const [dashboard] = useStorage(KEYS.dashboard, dashboardSeed);
+
+  // saved numbers + the look (icon, colour, label) from overviewData.js
+  const stats = dashboard.stats.map((stat) => ({ ...statConfig[stat.id], ...stat }));
+
   return (
     <div className="card-shell">
       {/* greeting banner */}
@@ -33,20 +43,20 @@ export default function Overview() {
       <div className="overview-body">
         {/* 4 small cards */}
         <div className="stats-grid">
-          {overviewStats.map((stat) => (
+          {stats.map((stat) => (
             <StatCard key={stat.id} {...stat} />
           ))}
         </div>
 
         {/* chart + role bars */}
         <div className="row-chart">
-          <UserGrowthChart />
-          <UsersByRole />
+          <UserGrowthChart data={dashboard.userGrowth} />
+          <UsersByRole items={dashboard.usersByRole} />
         </div>
 
         {/* activity + quick actions */}
         <div className="row-bottom">
-          <RecentActivity />
+          <RecentActivity items={dashboard.recentActivity} />
           <QuickActions />
         </div>
       </div>

@@ -6,6 +6,9 @@ import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Overview from './pages/Overview';
 import PlaceholderPage from './pages/PlaceholderPage';
+import Profile from './pages/Profile';
+import { KEYS, readJSON } from './services/storage';
+import { profileSeed } from './data/seedData';
 import { menuGroups } from './data/menuData';
 
 function getPageTitle(pathname) {
@@ -13,6 +16,10 @@ function getPageTitle(pathname) {
 
   if (currentPath === '/login') return 'ST Login';
   if (currentPath === '/') return 'ST Home';
+  if (currentPath === '/superuser' || currentPath === '/profile') {
+    const profile = readJSON(KEYS.profile, profileSeed);
+    return `ST ${profile?.name || profileSeed.name}`;
+  }
 
   const menuItem = menuGroups
     .flatMap((group) => group.items)
@@ -54,6 +61,10 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/" element={<Overview />} />
+            <Route path="/superuser" element={<Profile />} />
+            <Route path="/superuser/" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/" element={<Profile />} />
             {/* every other menu link shows a placeholder until we build it */}
             <Route path="*" element={<PlaceholderPage />} />
           </Route>
