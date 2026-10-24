@@ -8,6 +8,9 @@ import Overview from './pages/Overview';
 import PlaceholderPage from './pages/PlaceholderPage';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
+import Settings from './pages/Settings';
+import ChangePassword from './pages/ChangePassword';
+import DownloadHistory from './pages/DownloadHistory';
 import { KEYS, readJSON } from './services/storage';
 import { profileSeed } from './data/seedData';
 import { menuGroups } from './data/menuData';
@@ -55,11 +58,9 @@ export default function App() {
     <BrowserRouter>
       <PageTitle />
       <Routes>
-        {/* pages anyone can open */}
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
 
-        {/* pages that need a login: not signed in -> sent to /login/ */}
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/" element={<Overview />} />
@@ -69,7 +70,12 @@ export default function App() {
             <Route path="/superuser/" element={<Profile />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/" element={<Profile />} />
-            {/* every other menu link shows a placeholder until we build it */}
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings/" element={<Settings />} />
+            <Route path="/settings/change-password" element={<ChangePassword />} />
+            <Route path="/settings/change-password/" element={<ChangePassword />} />
+            <Route path="/download" element={<DownloadHistory />} />
+            <Route path="/download/" element={<DownloadHistory />} />
             <Route path="*" element={<PlaceholderPage />} />
           </Route>
         </Route>

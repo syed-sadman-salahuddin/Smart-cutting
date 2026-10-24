@@ -137,5 +137,121 @@
     "genderMale": "Male",
     "genderFemale": "Female",
     "genderOther": "Others"
+  },
+  "breadcrumb": {
+    "ariaLabel": "Breadcrumb",
+    "back": "Go back",
+    "home": "Home"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account security and preferences",
+    "accountSecurity": "Account Security",
+    "options": {
+      "changePassword": {
+        "title": "Change Password",
+        "description": "Update your login password with a stronger one to keep your account safe.",
+        "badge": "Available"
+      },
+      "twoFactor": {
+        "title": "Two-Factor Authentication",
+        "description": "Secure your account with a time-based one-time password (TOTP) from an authenticator app.",
+        "badge": "Manage"
+      }
+    },
+    "account": {
+      "title": "Account",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Account Status",
+      "superuser": "Superuser",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "tips": {
+      "title": "Security Tips",
+      "enable2fa": "Enable 2FA for maximum account protection",
+      "uniquePassword": "Use a unique password not used anywhere else",
+      "signOut": "Sign out from shared devices after use",
+      "noSharing": "Never share your credentials with anyone"
+    }
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "badgeSecurity": "Account Security",
+    "badgeProtected": "Protected Action",
+    "backToSettings": "Back to Settings",
+    "back": "Back",
+    "formTitle": "Password Form",
+    "notice": "Your new password will be used the next time you sign in.",
+    "currentPassword": "Current Password",
+    "currentPlaceholder": "Enter your current password",
+    "newPassword": "New Password",
+    "newPlaceholder": "Create a strong new password",
+    "newHelp": "Use at least 8 characters and avoid reusing your current password.",
+    "confirmPassword": "Confirm New Password",
+    "confirmPlaceholder": "Re-enter your new password",
+    "footerNote": "Make sure nobody can see your screen before submitting.",
+    "update": "Update Password",
+    "updateShort": "Update",
+    "updating": "Updating...",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "status": {
+      "title": "Status",
+      "user": "User",
+      "email": "Email",
+      "match": "Password Match"
+    },
+    "checklist": {
+      "title": "Password Checklist",
+      "length": "At least 8 characters",
+      "different": "Different from current password",
+      "match": "Confirmation matches"
+    },
+    "tips": {
+      "title": "Security Tips",
+      "unique": "Use a password you do not use in any other app or dashboard.",
+      "guess": "Avoid names, phone numbers, or anything easy to guess.",
+      "signOut": "After changing it, sign out from shared devices if needed."
+    },
+    "errors": {
+      "wrongCurrent": "Current password is incorrect.",
+      "tooShort": "New password must be at least 8 characters.",
+      "same": "New password must be different from your current password.",
+      "mismatch": "New password and confirmation do not match.",
+      "noSession": "Your session has expired. Please sign in again.",
+      "saveFailed": "Could not save the new password. Please try again."
+    },
+    "success": "Password updated successfully!"
+  },
+  "downloadHistory": {
+    "breadcrumb": "Download",
+    "title": "Download History",
+    "searchPlaceholder": "Search by report type...",
+    "show": "Show",
+    "rowsPerPage": "Rows per page",
+    "columns": {
+      "index": "#",
+      "report": "Report",
+      "file": "File",
+      "status": "Status",
+      "requestedAt": "Requested At",
+      "completedAt": "Completed At",
+      "actions": "Actions"
+    },
+    "status": {
+      "completed": "Completed",
+      "processing": "Processing",
+      "pending": "Pending",
+      "failed": "Failed"
+    },
+    "empty": "No data found",
+    "showing": "Showing <b>{{from}}–{{to}}</b> of <b>{{total}}</b> reports",
+    "previous": "Previous page",
+    "next": "Next page",
+    "download": "Download file",
+    "notReady": "File is not ready yet"
   }
 }

@@ -1,0 +1,94 @@
+.breadcrumb-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+html.dark .breadcrumb-wrap { border-bottom-color: #374151; }
+
+.breadcrumb-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+html.dark .breadcrumb-bar {
+  background: #111827;
+  border-color: #374151;
+}
+
+.breadcrumb-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: #4b5563;
+  transition: all 0.2s ease;
+}
+.breadcrumb-back:hover { background: #ffffff; color: var(--color-primary); }
+html.dark .breadcrumb-back { color: #9ca3af; }
+html.dark .breadcrumb-back:hover { background: #1f2937; color: var(--color-primary); }
+
+.breadcrumb-nav { display: flex; align-items: center; overflow-x: auto; }
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  list-style: none;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.breadcrumb-sep {
+  flex-shrink: 0;
+  margin: 0 2px;
+  color: #9ca3af;
+}
+html.dark .breadcrumb-sep { color: #4b5563; }
+
+.breadcrumb-link,
+.breadcrumb-current {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.breadcrumb-link {
+  color: #4b5563;
+  transition: all 0.2s ease;
+}
+.breadcrumb-link:hover { background: #ffffff; color: var(--color-primary); }
+html.dark .breadcrumb-link { color: #9ca3af; }
+html.dark .breadcrumb-link:hover { background: #1f2937; color: var(--color-primary); }
+
+.breadcrumb-current {
+  font-weight: 600;
+  color: #111827;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+html.dark .breadcrumb-current { color: #ffffff; background: #1f2937; }
+
+.breadcrumb-home-text { display: none; }
+@media (min-width: 640px) {
+  .breadcrumb-home-text { display: inline; }
+}

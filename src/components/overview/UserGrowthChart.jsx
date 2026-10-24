@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ChartSpline } from 'lucide-react';
 
-// The chart is drawn on a 640 x 240 canvas and then scaled to fit the card
 const W = 640;
 const H = 240;
 const LEFT = 40;
@@ -9,14 +8,12 @@ const RIGHT = 620;
 const TOP = 8;
 const BOTTOM = 208;
 
-// horizontal grid lines + the numbers on the left
 const ticks = [
   { y: 8, label: '2000' },
   { y: 108, label: '1000' },
   { y: 208, label: '0' },
 ];
 
-// turns { max, months, values } into x/y positions and the SVG line + area
 function buildChart({ max, months, values }) {
   const steps = Math.max(values.length - 1, 1);
   const points = values.map((value, i) => ({
@@ -36,7 +33,6 @@ export default function UserGrowthChart({ data }) {
   const last = points[points.length - 1];
   const active = hover === null ? null : points[hover];
 
-  // find the point closest to the mouse
   const handleMove = (e) => {
     const box = e.currentTarget.ownerSVGElement.getBoundingClientRect();
     const x = ((e.clientX - box.left) / box.width) * W;
