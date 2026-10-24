@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import {
   UserRound,
   Pencil,
@@ -15,8 +15,6 @@ import {
   Globe,
   Clock,
   ToggleRight,
-  X,
-  Check,
 } from 'lucide-react';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import '../styles/profile.css';
@@ -24,42 +22,6 @@ import '../styles/profile.css';
 export default function Profile() {
   const { t } = useTranslation();
   const currentUser = useCurrentUser();
-  const [isEditing, setIsEditing] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-
-  // Form state for editing
-  const [formData, setFormData] = useState({
-    name: currentUser.name || 'Syed Sadman Salahuddin',
-    email: currentUser.email || 'superuser@test.com',
-    phone: currentUser.phone || '+8801500000001',
-    gender: currentUser.gender || 'Male',
-    dateOfBirth: currentUser.dateOfBirth || 'Oct 19, 2002',
-    age: currentUser.age || '24',
-    religion: currentUser.religion || 'Islam',
-  });
-
-  const handleOpenEdit = () => {
-    setFormData({
-      name: currentUser.name || 'Syed Sadman Salahuddin',
-      email: currentUser.email || 'superuser@test.com',
-      phone: currentUser.phone || '+8801500000001',
-      gender: currentUser.gender || 'Male',
-      dateOfBirth: currentUser.dateOfBirth || 'Oct 19, 2002',
-      age: currentUser.age || '24',
-      religion: currentUser.religion || 'Islam',
-    });
-    setIsEditing(true);
-  };
-
-  const handleSave = (e) => {
-    e.preventDefault();
-    if (currentUser.updateProfile) {
-      currentUser.updateProfile(formData);
-    }
-    setIsEditing(false);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
-  };
 
   const statusList = [
     { key: 'active', label: t('profile.active', { defaultValue: 'Active' }) },
@@ -83,15 +45,14 @@ export default function Profile() {
           </div>
 
           <div className="profile-banner-actions">
-            <button
-              type="button"
+            <Link
               className="profile-edit-btn"
-              onClick={handleOpenEdit}
+              to="/superuser/edit"
               id="editProfileBtn"
             >
               <Pencil size={15} />
               <span>{t('profile.editProfile', { defaultValue: 'Edit Profile' })}</span>
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -103,7 +64,11 @@ export default function Profile() {
           <div className="profile-avatar-wrapper">
             <div className="profile-avatar-box">
               <div className="profile-avatar-inner">
-                <span className="profile-avatar-letter">{currentUser.initial}</span>
+                {currentUser.avatar ? (
+                  <img className="profile-avatar-image" src={currentUser.avatar} alt="" />
+                ) : (
+                  <span className="profile-avatar-letter">{currentUser.initial}</span>
+                )}
               </div>
             </div>
           </div>
@@ -348,132 +313,6 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* ---------- Edit Profile Modal ---------- */}
-      {isEditing && (
-        <div className="profile-modal-backdrop" onClick={() => setIsEditing(false)}>
-          <div className="profile-modal-dialog" onClick={(e) => e.stopPropagation()}>
-            <div className="profile-modal-header">
-              <div className="modal-header-title">
-                <Pencil size={18} />
-                <span>{t('profile.editProfileTitle', { defaultValue: 'Edit Profile' })}</span>
-              </div>
-              <button
-                type="button"
-                className="modal-close-btn"
-                onClick={() => setIsEditing(false)}
-                aria-label="Close"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <form onSubmit={handleSave}>
-              <div className="profile-modal-body">
-                <div className="modal-form-grid">
-                  <div className="form-group modal-span-2">
-                    <label className="form-label">{t('profile.fullName', { defaultValue: 'Full Name' })}</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">{t('profile.email', { defaultValue: 'Email' })}</label>
-                    <input
-                      type="email"
-                      className="form-input"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">{t('profile.phone', { defaultValue: 'Phone' })}</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">{t('profile.gender', { defaultValue: 'Gender' })}</label>
-                    <select
-                      className="form-select"
-                      value={formData.gender}
-                      onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                    >
-                      <option value="Male">{t('profile.genderMale', { defaultValue: 'Male' })}</option>
-                      <option value="Female">{t('profile.genderFemale', { defaultValue: 'Female' })}</option>
-                      <option value="Other">{t('profile.genderOther', { defaultValue: 'Other' })}</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">{t('profile.age', { defaultValue: 'Age' })}</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={formData.age}
-                      onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">
-                      {t('profile.dateOfBirth', { defaultValue: 'Date of Birth' })}
-                    </label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={formData.dateOfBirth}
-                      onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">{t('profile.religion', { defaultValue: 'Religion' })}</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={formData.religion}
-                      onChange={(e) => setFormData({ ...formData, religion: e.target.value })}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="profile-modal-footer">
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={() => setIsEditing(false)}
-                >
-                  {t('profile.cancel', { defaultValue: 'Cancel' })}
-                </button>
-                <button type="submit" className="btn-primary">
-                  {t('profile.saveChanges', { defaultValue: 'Save Changes' })}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ---------- Success Toast ---------- */}
-      {showToast && (
-        <div className="profile-toast">
-          <Check size={18} />
-          <span>{t('profile.profileUpdated', { defaultValue: 'Profile updated successfully!' })}</span>
-        </div>
-      )}
     </div>
   );
 }

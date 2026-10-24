@@ -24,7 +24,7 @@ export function useStorage(key, fallback) {
   const update = useCallback(
     (next) => {
       const current = readJSON(key, fallbackRef.current);
-      writeJSON(key, typeof next === 'function' ? next(current) : next);
+      return writeJSON(key, typeof next === 'function' ? next(current) : next);
     },
     [key]
   );

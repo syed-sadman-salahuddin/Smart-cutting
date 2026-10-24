@@ -12,7 +12,7 @@ export function useCurrentUser() {
     name,
     initial: name.trim().charAt(0).toUpperCase() || 'S',
     updateProfile: (updates) => {
-      setProfile((prev) => ({ ...(prev || profileSeed), ...updates }));
+      return setProfile((prev) => ({ ...(prev || profileSeed), ...updates }));
     },
   };
 }

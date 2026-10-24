@@ -20,25 +20,21 @@ const LANGUAGES = [
 export default function Header({ onOpenMobileSidebar }) {
   const currentUser = useCurrentUser();
   const { t, i18n } = useTranslation();
-  // which dropdown is open: 'appearance' | 'language' | 'notifications' | 'user' | null
   const [openMenu, setOpenMenu] = useState(null);
   const [appearance, setAppearance] = useState(loadAppearance);
   const [appearanceTab, setAppearanceTab] = useState('color');
   const [roundedCategory, setRoundedCategory] = useState('button');
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // the active language comes from i18next (saved in localStorage by translations/i18n.js)
   const language = i18n.language?.startsWith('bn') ? 'bn' : 'en';
 
   const toggleMenu = (name) => setOpenMenu((cur) => (cur === name ? null : name));
 
-  // Apply + remember colour / dark mode / roundness whenever they change
   useEffect(() => {
     applyAppearance(appearance);
     saveAppearance(appearance);
   }, [appearance]);
 
-  // Close dropdowns when clicking outside or pressing Esc
   useEffect(() => {
     const onMouseDown = (e) => {
       if (!e.target.closest('[data-menu-root]')) setOpenMenu(null);

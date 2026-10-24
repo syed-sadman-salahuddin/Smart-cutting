@@ -1,9 +1,4 @@
-/* ==========================================================================
-   Profile Section Styles
-   Matches the Smart Cutting admin dashboard aesthetic pixel-for-pixel
-   ========================================================================== */
 
-/* ---------- Main Card Outer Shell ---------- */
 .profile-card-shell {
   flex: 1;
   display: flex;
@@ -25,17 +20,21 @@ html.dark .profile-card-shell {
 /* ---------- Top Banner ---------- */
 .profile-banner {
   padding: 10px 16px;
-  border-bottom: 1px solid rgba(var(--color-primary-rgb, 16 185 129), 0.15);
+  border-bottom: 1px solid rgb(var(--color-primary-rgb, 16 185 129) / 0.18);
   background: linear-gradient(
     to right,
-    rgba(var(--color-primary-rgb, 16 185 129), 0.05),
-    rgba(var(--color-primary-rgb, 16 185 129), 0.1)
+    rgb(var(--color-primary-rgb, 16 185 129) / 0.06),
+    rgb(var(--color-primary-rgb, 16 185 129) / 0.1)
   );
 }
 
 html.dark .profile-banner {
   border-bottom-color: #374151;
-  background: linear-gradient(to right, #111827, #1f2937);
+  background: linear-gradient(
+    to right,
+    rgb(var(--color-primary-rgb, 16 185 129) / 0.08),
+    rgb(var(--color-primary-rgb, 16 185 129) / 0.16)
+  );
 }
 
 @media (min-width: 640px) {
@@ -74,7 +73,11 @@ html.dark .profile-banner {
   justify-content: center;
   flex-shrink: 0;
   color: #ffffff;
-  background: linear-gradient(135deg, var(--color-primary, #10b981), var(--color-secondary, #059669));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary, #10b981),
+    var(--color-secondary, #059669)
+  );
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -193,11 +196,11 @@ html.dark .profile-avatar-box {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--color-primary-rgb, 16 185 129), 0.12),
-    rgba(var(--color-secondary-rgb, 5 150 105), 0.12)
-  );
+  background: rgb(var(--color-primary-rgb, 16 185 129) / 0.12);
+}
+
+html.dark .profile-avatar-inner {
+  background: rgb(var(--color-primary-rgb, 16 185 129) / 0.2);
 }
 
 .profile-avatar-letter {
@@ -205,6 +208,12 @@ html.dark .profile-avatar-box {
   font-weight: 900;
   line-height: 1;
   color: var(--color-primary, #10b981);
+}
+
+.profile-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .profile-hero-meta {
