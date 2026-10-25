@@ -29,14 +29,10 @@ function filterMenu(groups, query, show) {
     .filter((group) => group.items.length > 0);
 }
 
-function getActiveMenus(pathname) {
-  const ids = [];
-  menuGroups.forEach((group) =>
-    group.items.forEach((item) => {
-      if (item.children?.some((child) => child.path === pathname)) ids.push(item.id);
-    })
-  );
-  return ids;
+function getActiveMenu(pathname) {
+  return menuGroups
+    .flatMap((group) => group.items)
+    .find((item) => item.children?.some((child) => child.path === pathname))?.id || null;
 }
 
 export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onCloseMobile }) {
@@ -44,13 +40,13 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
   const { t, i18n } = useTranslation();
   const { pathname } = useLocation();
   const [query, setQuery] = useState('');
-  const [openMenus, setOpenMenus] = useState(() => getActiveMenus(pathname));
+  const [openMenu, setOpenMenu] = useState(() => getActiveMenu(pathname));
 
   const showItem = (label) => t(`sidebar.items.${label}`, { defaultValue: label });
   const showGroup = (title) => t(`sidebar.groups.${title}`, { defaultValue: title });
 
   useEffect(() => {
-    setOpenMenus((prev) => [...new Set([...prev, ...getActiveMenus(pathname)])]);
+    setOpenMenu(getActiveMenu(pathname));
     onCloseMobile();
   }, [pathname]);
 
@@ -60,8 +56,19 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
     [query, i18n.language]
   );
 
-  const toggleMenu = (id) =>
-    setOpenMenus((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  useEffect(() => {
+    if (!isSearching) {
+      setOpenMenu(getActiveMenu(pathname));
+      return;
+    }
+
+    const firstMatchingMenu = visibleGroups
+      .flatMap((group) => group.items)
+      .find((item) => item.children)?.id;
+    setOpenMenu(firstMatchingMenu || null);
+  }, [isSearching, pathname, visibleGroups]);
+
+  const toggleMenu = (id) => setOpenMenu((previous) => (previous === id ? null : id));
 
   return (
     <aside id="sidebar" className={`sidebar${mobileOpen ? ' mobile-open' : ''}`}>
@@ -124,7 +131,6 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                 {group.items.map((item) => {
                   const Icon = item.icon;
 
-                  // 1) simple link (Overview, Download History)
                   if (!item.children) {
                     return (
                       <NavLink
@@ -139,12 +145,12 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                     );
                   }
 
-                  const isOpen = isSearching || openMenus.includes(item.id);
+                  const isOpen = openMenu === item.id;
                   return (
                     <div className="menu-group" key={item.id}>
                       <button
                         type="button"
-                        className="nav-link"
+                        className={`nav-link${isOpen ? ' active' : ''}`}
                         aria-expanded={isOpen}
                         onClick={() => toggleMenu(item.id)}
                       >
@@ -177,7 +183,6 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
         {visibleGroups.length === 0 && <p className="sidebar-no-results">{t('sidebar.noResults')}</p>}
       </nav>
 
-      {/* logged-in user at the bottom */}
       <div className="sidebar-footer">
         <Link to="/superuser/" className="profile-row" title={currentUser.name}>
           <div className="profile-avatar">

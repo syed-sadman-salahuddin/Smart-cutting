@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -8,6 +8,9 @@ import {
   Check,
   ChevronRight,
   Home,
+  Image as ImageIcon,
+  Maximize2,
+  Minimize2,
   Mail,
   Pencil,
   Phone,
@@ -19,6 +22,7 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 import '../styles/profile-edit.css';
 
 const MAX_PHOTO_SIZE = 2 * 1024 * 1024;
+const PHOTO_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 
 function getDateInputValue(value) {
   if (!value) return '';
@@ -51,9 +55,41 @@ function getNameParts(name) {
 function readPhoto(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => {
+      if (typeof reader.result === 'string') resolve(reader.result);
+      else reject(new Error('The selected photo could not be read.'));
+    };
     reader.onerror = () => reject(new Error('The selected photo could not be read.'));
     reader.readAsDataURL(file);
+  });
+}
+
+function cropPhotoToSquare(source) {
+  return new Promise((resolve, reject) => {
+    const image = new window.Image();
+    image.onload = () => {
+      const side = Math.min(image.naturalWidth, image.naturalHeight);
+      const offsetX = (image.naturalWidth - side) / 2;
+      const offsetY = (image.naturalHeight - side) / 2;
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      const context = canvas.getContext('2d');
+
+      if (!context) {
+        reject(new Error('The selected photo could not be processed.'));
+        return;
+      }
+
+      try {
+        context.drawImage(image, offsetX, offsetY, side, side, 0, 0, 512, 512);
+        resolve(canvas.toDataURL('image/png'));
+      } catch {
+        reject(new Error('The selected photo could not be processed.'));
+      }
+    };
+    image.onerror = () => reject(new Error('The selected photo could not be processed.'));
+    image.src = source;
   });
 }
 
@@ -70,36 +106,87 @@ export default function EditProfile() {
     dateOfBirth: getDateInputValue(currentUser.dateOfBirth),
   }));
   const [photo, setPhoto] = useState(currentUser.avatar || '');
+  const [photoDialogOpen, setPhotoDialogOpen] = useState(false);
+  const [pendingPhoto, setPendingPhoto] = useState('');
+  const [photoError, setPhotoError] = useState('');
+  const [isDraggingPhoto, setIsDraggingPhoto] = useState(false);
+  const [isPhotoDialogExpanded, setIsPhotoDialogExpanded] = useState(false);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
+
+  const closePhotoDialog = useCallback(() => {
+    setPhotoDialogOpen(false);
+    setPendingPhoto('');
+    setPhotoError('');
+    setIsDraggingPhoto(false);
+    setIsPhotoDialogExpanded(false);
+    if (photoInput.current) photoInput.current.value = '';
+  }, []);
+
+  useEffect(() => {
+    if (!photoDialogOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') closePhotoDialog();
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [photoDialogOpen, closePhotoDialog]);
+
+  const openPhotoDialog = () => {
+    setPhotoError('');
+    setPendingPhoto('');
+    setPhotoDialogOpen(true);
+  };
 
   const updateField = (event) => {
     setSaved(false);
     setFormData((previous) => ({ ...previous, [event.target.name]: event.target.value }));
   };
 
-  const handlePhotoChange = async (event) => {
-    const file = event.target.files?.[0];
+  const handlePhotoFile = async (file) => {
     if (!file) return;
-    setError('');
-    setSaved(false);
+    setPhotoError('');
 
-    if (!file.type.startsWith('image/')) {
-      setError('Choose an image file to use as your profile photo.');
-      event.target.value = '';
+    if (!PHOTO_TYPES.includes(file.type)) {
+      setPhotoError('Choose a PNG, JPG, GIF, or WEBP image.');
       return;
     }
     if (file.size > MAX_PHOTO_SIZE) {
-      setError('The profile photo must be 2 MB or smaller.');
-      event.target.value = '';
+      setPhotoError('The profile photo must be 2 MB or smaller.');
       return;
     }
 
     try {
-      setPhoto(await readPhoto(file));
+      const imageData = await readPhoto(file);
+      setPendingPhoto(await cropPhotoToSquare(imageData));
     } catch (readError) {
-      setError(readError.message);
+      setPhotoError(readError.message);
     }
+  };
+
+  const handlePhotoChange = (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    handlePhotoFile(file);
+  };
+
+  const handlePhotoDrop = (event) => {
+    event.preventDefault();
+    setIsDraggingPhoto(false);
+    handlePhotoFile(event.dataTransfer.files?.[0]);
+  };
+
+  const applyPhoto = () => {
+    if (!pendingPhoto) return;
+    setPhoto(pendingPhoto);
+    setSaved(false);
+    setError('');
+    closePhotoDialog();
   };
 
   const handleSave = (event) => {
@@ -261,19 +348,11 @@ export default function EditProfile() {
                 <h2 id="profilePhotoHeading">Profile Photo</h2>
               </header>
               <div className="edit-photo-content">
-                <input
-                  ref={photoInput}
-                  type="file"
-                  accept="image/*"
-                  className="edit-photo-input"
-                  onChange={handlePhotoChange}
-                  aria-label="Choose a profile photo"
-                />
                 <button
                   type="button"
                   className="edit-photo-picker"
-                  onClick={() => photoInput.current?.click()}
-                  aria-label="Upload profile photo"
+                  onClick={openPhotoDialog}
+                  aria-label={photo ? 'Change profile photo' : 'Upload profile photo'}
                 >
                   {photo ? (
                     <img src={photo} alt="Profile preview" />
@@ -304,6 +383,93 @@ export default function EditProfile() {
           )}
         </form>
       </div>
+      {photoDialogOpen && (
+        <div
+          className="photo-dialog-backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) closePhotoDialog();
+          }}
+        >
+          <section
+            className={`photo-dialog${isPhotoDialogExpanded ? ' is-expanded' : ''}`}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="photoDialogHeading"
+          >
+            <header className="photo-dialog-header">
+              <span className="photo-dialog-icon"><Camera size={19} /></span>
+              <div className="photo-dialog-title">
+                <h2 id="photoDialogHeading">Upload Profile Photo</h2>
+                <p>Select an image to crop and apply</p>
+              </div>
+              <button
+                type="button"
+                className="photo-dialog-icon-button"
+                aria-label={isPhotoDialogExpanded ? 'Restore dialog size' : 'Expand dialog'}
+                onClick={() => setIsPhotoDialogExpanded((expanded) => !expanded)}
+              >
+                {isPhotoDialogExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+              </button>
+              <button type="button" className="photo-dialog-icon-button" aria-label="Close" onClick={closePhotoDialog}>
+                <X size={17} />
+              </button>
+            </header>
+            <div className="photo-dialog-body">
+              <label className="photo-dialog-label" htmlFor="profilePhotoFile">
+                Select Image <b>*</b>
+              </label>
+              <input
+                id="profilePhotoFile"
+                ref={photoInput}
+                type="file"
+                accept=".png,.jpg,.jpeg,.gif,.webp,image/png,image/jpeg,image/gif,image/webp"
+                className="edit-photo-input"
+                onChange={handlePhotoChange}
+              />
+              <button
+                type="button"
+                className={`photo-dropzone${isDraggingPhoto ? ' is-dragging' : ''}${pendingPhoto ? ' has-preview' : ''}`}
+                onClick={() => photoInput.current?.click()}
+                onDragOver={(event) => {
+                  event.preventDefault();
+                  setIsDraggingPhoto(true);
+                }}
+                onDragLeave={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget)) setIsDraggingPhoto(false);
+                }}
+                onDrop={handlePhotoDrop}
+              >
+                {pendingPhoto ? (
+                  <>
+                    <img src={pendingPhoto} alt="Square-cropped profile photo preview" />
+                    <span className="photo-dropzone-change">Click to choose a different image</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="photo-dropzone-image-icon"><ImageIcon size={22} /></span>
+                    <strong>Click to upload or drag &amp; drop</strong>
+                    <small>PNG, JPG, GIF, WEBP · Max 2 MB</small>
+                  </>
+                )}
+              </button>
+              <p className="photo-dialog-hint">Will be cropped to a 1:1 square</p>
+              {photoError && <p className="photo-dialog-error" role="alert">{photoError}</p>}
+            </div>
+            <footer className="photo-dialog-footer">
+              <button type="button" className="photo-dialog-cancel" onClick={closePhotoDialog}>
+                <X size={15} />
+                <span>Cancel</span>
+              </button>
+              {pendingPhoto && (
+                <button type="button" className="photo-dialog-apply" onClick={applyPhoto}>
+                  <Check size={15} />
+                  <span>Apply Photo</span>
+                </button>
+              )}
+            </footer>
+          </section>
+        </div>
+      )}
     </section>
   );
 }
