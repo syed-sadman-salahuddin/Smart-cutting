@@ -20,6 +20,7 @@ import OurReference from './pages/OurReference';
 import Buyer from './pages/Buyer';
 import FabricShades from './pages/FabricShades';
 import Groups from './pages/Groups';
+import CuttingPO from './pages/CuttingPO';
 import { KEYS, readJSON } from './services/storage';
 import { profileSeed } from './data/seedData';
 import { menuGroups } from './data/menuData';
@@ -32,6 +33,7 @@ function getPageTitle(pathname) {
   if (currentPath === '/general/part') return 'ST Cutting Parts';
   if (currentPath === '/general/shade') return 'ST Fabric Shades';
   if (currentPath === '/general/group') return 'ST Cutting Ratio Groups';
+  if (currentPath === '/cutting/po') return 'ST Cutting POs';
   if (currentPath === '/notifications') return 'ST Notifications';
   if (currentPath === '/superuser/edit' || currentPath === '/profile/edit') return 'ST Edit Profile';
   if (currentPath === '/superuser' || currentPath === '/profile') {
@@ -107,6 +109,8 @@ export default function App() {
             <Route path="/po/our-reference/" element={<OurReference />} />
             <Route path="/po/buyer" element={<Buyer />} />
             <Route path="/po/buyer/" element={<Buyer />} />
+            <Route path="/cutting/po" element={<CuttingPO />} />
+            <Route path="/cutting/po/" element={<CuttingPO />} />
             <Route path="*" element={<PlaceholderPage />} />
           </Route>
         </Route>

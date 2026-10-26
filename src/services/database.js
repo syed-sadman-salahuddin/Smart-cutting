@@ -9,8 +9,9 @@ import { colorsSeed } from '../data/colorsData';
 import { purchaseOrdersSeed } from '../data/purchaseOrdersData';
 import { ourReferencesSeed } from '../data/ourReferencesData';
 import { buyersSeed } from '../data/buyersData';
+import { cuttingPOsSeed } from '../data/cuttingPOData';
 
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 
 function ensure(key, seed) {
   if (readJSON(key, null) === null) writeJSON(key, seed);
@@ -28,6 +29,7 @@ export function initDatabase() {
   ensure(KEYS.purchaseOrders, purchaseOrdersSeed);
   ensure(KEYS.ourReferences, ourReferencesSeed);
   ensure(KEYS.buyers, buyersSeed);
+  ensure(KEYS.cuttingPOs, cuttingPOsSeed);
 
   if (readJSON(KEYS.dbVersion, 0) !== DB_VERSION) {
     writeJSON(KEYS.profile, profileSeed);

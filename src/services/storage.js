@@ -16,6 +16,7 @@ export const KEYS = {
   purchaseOrders: 'st-purchase-orders',
   ourReferences: 'st-our-references',
   buyers: 'st-buyers',
+  cuttingPOs: 'st-cutting-pos',
   notifications: 'st-notifications',
 };
 
