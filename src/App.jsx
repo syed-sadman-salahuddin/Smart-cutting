@@ -11,6 +11,15 @@ import EditProfile from './pages/EditProfile';
 import Settings from './pages/Settings';
 import ChangePassword from './pages/ChangePassword';
 import DownloadHistory from './pages/DownloadHistory';
+import Notifications from './pages/Notifications';
+import Parts from './pages/Parts';
+import Colors from './pages/Colors';
+import Sizes from './pages/Sizes';
+import PurchaseOrders from './pages/PurchaseOrders';
+import OurReference from './pages/OurReference';
+import Buyer from './pages/Buyer';
+import FabricShades from './pages/FabricShades';
+import Groups from './pages/Groups';
 import { KEYS, readJSON } from './services/storage';
 import { profileSeed } from './data/seedData';
 import { menuGroups } from './data/menuData';
@@ -20,6 +29,10 @@ function getPageTitle(pathname) {
 
   if (currentPath === '/login') return 'ST Login';
   if (currentPath === '/') return 'ST Home';
+  if (currentPath === '/general/part') return 'ST Cutting Parts';
+  if (currentPath === '/general/shade') return 'ST Fabric Shades';
+  if (currentPath === '/general/group') return 'ST Cutting Ratio Groups';
+  if (currentPath === '/notifications') return 'ST Notifications';
   if (currentPath === '/superuser/edit' || currentPath === '/profile/edit') return 'ST Edit Profile';
   if (currentPath === '/superuser' || currentPath === '/profile') {
     const profile = readJSON(KEYS.profile, profileSeed);
@@ -76,6 +89,24 @@ export default function App() {
             <Route path="/settings/change-password/" element={<ChangePassword />} />
             <Route path="/download" element={<DownloadHistory />} />
             <Route path="/download/" element={<DownloadHistory />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/notifications/" element={<Notifications />} />
+            <Route path="/general/part" element={<Parts />} />
+            <Route path="/general/part/" element={<Parts />} />
+            <Route path="/general/shade" element={<FabricShades />} />
+            <Route path="/general/shade/" element={<FabricShades />} />
+            <Route path="/general/group" element={<Groups />} />
+            <Route path="/general/group/" element={<Groups />} />
+            <Route path="/po/size" element={<Sizes />} />
+            <Route path="/po/size/" element={<Sizes />} />
+            <Route path="/po/color" element={<Colors />} />
+            <Route path="/po/color/" element={<Colors />} />
+            <Route path="/po/purchase-order" element={<PurchaseOrders />} />
+            <Route path="/po/purchase-order/" element={<PurchaseOrders />} />
+            <Route path="/po/our-reference" element={<OurReference />} />
+            <Route path="/po/our-reference/" element={<OurReference />} />
+            <Route path="/po/buyer" element={<Buyer />} />
+            <Route path="/po/buyer/" element={<Buyer />} />
             <Route path="*" element={<PlaceholderPage />} />
           </Route>
         </Route>

@@ -30,9 +30,16 @@ function filterMenu(groups, query, show) {
 }
 
 function getActiveMenu(pathname) {
-  return menuGroups
-    .flatMap((group) => group.items)
-    .find((item) => item.children?.some((child) => child.path === pathname))?.id || null;
+  const norm = pathname.replace(/\/+$/, '') || '/';
+  return (
+    menuGroups
+      .flatMap((group) => group.items)
+      .find((item) =>
+        item.children?.some(
+          (child) => (child.path.replace(/\/+$/, '') || '/') === norm
+        )
+      )?.id || null
+  );
 }
 
 export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onCloseMobile }) {
@@ -161,15 +168,21 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
 
                       {isOpen && (
                         <div className="submenu sidebar-text">
-                          {item.children.map((child) => (
-                            <NavLink
-                              key={child.path}
-                              to={child.path}
-                              className={({ isActive }) => `submenu-link${isActive ? ' active' : ''}`}
-                            >
-                              {showItem(child.label)}
-                            </NavLink>
-                          ))}
+                          {item.children.map((child) => {
+                            const normPath = pathname.replace(/\/+$/, '') || '/';
+                            const normChildPath = child.path.replace(/\/+$/, '') || '/';
+                            return (
+                              <NavLink
+                                key={child.path}
+                                to={child.path}
+                                className={({ isActive }) =>
+                                  `submenu-link${isActive || normPath === normChildPath ? ' active' : ''}`
+                                }
+                              >
+                                {showItem(child.label)}
+                              </NavLink>
+                            );
+                          })}
                         </div>
                       )}
                     </div>

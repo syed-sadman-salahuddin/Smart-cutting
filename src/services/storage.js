@@ -1,16 +1,22 @@
-
-
 export const KEYS = {
-  users: 'st-users',                 
-  session: 'st-session',             
-  appearance: 'st-appearance',       
+  users: 'st-users',
+  session: 'st-session',
+  appearance: 'st-appearance',
   sidebarCollapsed: 'st-sidebar-collapsed',
   language: 'st-language',
 
-  
-  dbVersion: 'st-db-version',        
-  profile: 'st-profile',             
-  dashboard: 'st-dashboard',         
+  dbVersion: 'st-db-version',
+  profile: 'st-profile',
+  dashboard: 'st-dashboard',
+  parts: 'st-parts',
+  shades: 'st-shades',
+  groups: 'st-groups',
+  sizes: 'st-sizes',
+  colors: 'st-colors',
+  purchaseOrders: 'st-purchase-orders',
+  ourReferences: 'st-our-references',
+  buyers: 'st-buyers',
+  notifications: 'st-notifications',
 };
 
 export const STORAGE_EVENT = 'st-storage';
@@ -39,5 +45,6 @@ export function removeKey(key) {
     localStorage.removeItem(key);
     window.dispatchEvent(new CustomEvent(STORAGE_EVENT, { detail: { key } }));
   } catch {
+    // ignore
   }
 }

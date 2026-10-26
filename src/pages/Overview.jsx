@@ -48,13 +48,11 @@ export default function Overview() {
           ))}
         </div>
 
-        {/* chart + role bars */}
         <div className="row-chart">
           <UserGrowthChart data={dashboard.userGrowth} />
           <UsersByRole items={dashboard.usersByRole} />
         </div>
 
-        {/* activity + quick actions */}
         <div className="row-bottom">
           <RecentActivity items={dashboard.recentActivity} />
           <QuickActions />

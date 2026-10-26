@@ -6,6 +6,8 @@ import {
   Check, Sparkles, RotateCcw, User, Settings, FileDown, LogOut,
 } from 'lucide-react';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import { KEYS } from '../services/storage';
+import { useStorage } from '../hooks/useStorage';
 import {
   COLOR_THEMES, ROUNDED_CATEGORIES, ROUNDED_OPTIONS, DEFAULT_APPEARANCE,
   loadAppearance, saveAppearance, applyAppearance,
@@ -19,6 +21,7 @@ const LANGUAGES = [
 
 export default function Header({ onOpenMobileSidebar }) {
   const currentUser = useCurrentUser();
+  const [notifications] = useStorage(KEYS.notifications, []);
   const { t, i18n } = useTranslation();
   const [openMenu, setOpenMenu] = useState(null);
   const [appearance, setAppearance] = useState(loadAppearance);
@@ -69,6 +72,9 @@ export default function Header({ onOpenMobileSidebar }) {
   };
 
   const isDark = appearance.mode === 'dark';
+  const unreadCount = Array.isArray(notifications)
+    ? notifications.filter((notification) => !notification.read).length
+    : 0;
 
   return (
     <header id="header" className="header">
@@ -233,9 +239,11 @@ export default function Header({ onOpenMobileSidebar }) {
             <div className="dropdown dropdown-wide">
               <div className="notif-head">
                 <h3>{t('notifications.title')}</h3>
-                <p>{t('notifications.unread', { count: 0 })}</p>
+                <p>{t('notifications.unread', { count: unreadCount })}</p>
               </div>
-              <div className="notif-empty">{t('notifications.empty')}</div>
+              <div className="notif-empty">
+                {unreadCount === 0 ? t('notifications.empty') : t('notifications.unread', { count: unreadCount })}
+              </div>
               <div className="notif-foot">
                 <Link to="/notifications/" onClick={() => setOpenMenu(null)}>{t('notifications.viewAll')}</Link>
               </div>

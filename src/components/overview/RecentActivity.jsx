@@ -13,7 +13,7 @@ export default function RecentActivity({ items }) {
       <ul className="activity-list">
         {items.map((item) => {
           const look = activityTypes[item.type];
-          if (!look) return null; // unknown type -> skip instead of crashing
+          if (!look) return null; 
           const Icon = look.icon;
           return (
             <li className={`activity-item tone-${look.tone}`} key={item.id}>
