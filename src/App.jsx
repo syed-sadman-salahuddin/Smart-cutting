@@ -22,7 +22,9 @@ import FabricShades from './pages/FabricShades';
 import Groups from './pages/Groups';
 import CuttingPO from './pages/CuttingPO';
 import CuttingPOCreate from './pages/CuttingPOCreate';
+import BundleCardList from './pages/BundleCardList';
 import BundleCardSinglePOCreate from './pages/BundleCardSinglePOCreate';
+import BundleCardMultiPOCreate from './pages/BundleCardMultiPOCreate';
 import { KEYS, readJSON } from './services/storage';
 import { profileSeed } from './data/seedData';
 import { menuGroups } from './data/menuData';
@@ -37,7 +39,8 @@ function getPageTitle(pathname) {
   if (currentPath === '/general/group') return 'ST Cutting Ratio Groups';
   if (currentPath === '/cutting/po') return 'ST Cutting POs';
   if (currentPath === '/cutting/po/create') return 'ST Create Cutting PO';
-  if (currentPath === '/cutting/bundle-card/single-po/create') return 'ST Bundle Card';
+  if (currentPath === '/cutting/bundle-card') return 'ST Bundle Cards';
+  if (currentPath === '/cutting/bundle-card/single-po/create' || currentPath === '/cutting/bundle-card/multi-po/create') return 'ST Bundle Card';
   if (currentPath === '/notifications') return 'ST Notifications';
   if (currentPath === '/superuser/edit' || currentPath === '/profile/edit') return 'ST Edit Profile';
   if (currentPath === '/superuser' || currentPath === '/profile') {
@@ -117,10 +120,12 @@ export default function App() {
             <Route path="/cutting/po/" element={<CuttingPO />} />
             <Route path="/cutting/po/create" element={<CuttingPOCreate />} />
             <Route path="/cutting/po/create/" element={<CuttingPOCreate />} />
-            <Route path="/cutting/bundle-card" element={<BundleCardSinglePOCreate />} />
-            <Route path="/cutting/bundle-card/" element={<BundleCardSinglePOCreate />} />
+            <Route path="/cutting/bundle-card" element={<BundleCardList />} />
+            <Route path="/cutting/bundle-card/" element={<BundleCardList />} />
             <Route path="/cutting/bundle-card/single-po/create" element={<BundleCardSinglePOCreate />} />
             <Route path="/cutting/bundle-card/single-po/create/" element={<BundleCardSinglePOCreate />} />
+            <Route path="/cutting/bundle-card/multi-po/create" element={<BundleCardMultiPOCreate />} />
+            <Route path="/cutting/bundle-card/multi-po/create/" element={<BundleCardMultiPOCreate />} />
             <Route path="*" element={<PlaceholderPage />} />
           </Route>
         </Route>

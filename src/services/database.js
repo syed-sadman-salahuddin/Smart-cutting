@@ -10,11 +10,15 @@ import { purchaseOrdersSeed } from '../data/purchaseOrdersData';
 import { ourReferencesSeed } from '../data/ourReferencesData';
 import { buyersSeed } from '../data/buyersData';
 import { cuttingPOsSeed } from '../data/cuttingPOData';
+import { bundleCardsSeed } from '../data/bundleCardsData';
 
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 function ensure(key, seed) {
-  if (readJSON(key, null) === null) writeJSON(key, seed);
+  const current = readJSON(key, null);
+  if (current === null || (Array.isArray(current) && current.length === 0)) {
+    writeJSON(key, seed);
+  }
 }
 
 export function initDatabase() {
@@ -30,6 +34,7 @@ export function initDatabase() {
   ensure(KEYS.ourReferences, ourReferencesSeed);
   ensure(KEYS.buyers, buyersSeed);
   ensure(KEYS.cuttingPOs, cuttingPOsSeed);
+  ensure(KEYS.bundleCards, bundleCardsSeed);
 
   if (readJSON(KEYS.dbVersion, 0) !== DB_VERSION) {
     writeJSON(KEYS.profile, profileSeed);

@@ -513,6 +513,7 @@ export default function BundleCardSinglePOCreate() {
                     <div className={`bundle-control${ourReference ? ' has-value' : ''}`}>
                       <Link2 size={14} className="bundle-prefix-icon" />
                       <select
+                        autoComplete="off"
                         id="bundle-our-ref"
                         value={ourReference}
                         onChange={(e) => handleReferenceChange(e.target.value)}
@@ -546,6 +547,7 @@ export default function BundleCardSinglePOCreate() {
                     <div className={`bundle-control${selectedPO ? ' has-value' : ''}`}>
                       <Hash size={14} className="bundle-prefix-icon" />
                       <select
+                        autoComplete="off"
                         id="bundle-po"
                         value={selectedPO}
                         onChange={(e) => handlePOChange(e.target.value)}
@@ -579,6 +581,7 @@ export default function BundleCardSinglePOCreate() {
                     <div className={`bundle-control${cuttingTable ? ' has-value' : ''}`}>
                       <LayoutGrid size={14} className="bundle-prefix-icon" />
                       <select
+                        autoComplete="off"
                         id="bundle-table"
                         value={cuttingTable}
                         onChange={(e) => setCuttingTable(e.target.value)}
@@ -612,6 +615,7 @@ export default function BundleCardSinglePOCreate() {
                     <div className={`bundle-control${sewingLine ? ' has-value' : ''}`}>
                       <Rows3 size={14} className="bundle-prefix-icon" />
                       <select
+                        autoComplete="off"
                         id="bundle-line"
                         value={sewingLine}
                         onChange={(e) => setSewingLine(e.target.value)}
@@ -662,6 +666,7 @@ export default function BundleCardSinglePOCreate() {
                       <div className="bundle-transfer-search">
                         <Search size={13} />
                         <input
+                          autoComplete="off"
                           type="text"
                           className="bundle-transfer-search-input"
                           placeholder="Search available..."
@@ -849,6 +854,7 @@ export default function BundleCardSinglePOCreate() {
                   <div className="bundle-control">
                     <Scan size={14} className="bundle-prefix-icon" />
                     <input
+                      autoComplete="off"
                       type="number"
                       min="1"
                       value={nextCutNumber}
@@ -866,6 +872,7 @@ export default function BundleCardSinglePOCreate() {
                   <div className="bundle-control">
                     <Layers size={14} className="bundle-prefix-icon" />
                     <input
+                      autoComplete="off"
                       type="number"
                       min="1"
                       value={maxQuantityPerBundle}
@@ -881,6 +888,7 @@ export default function BundleCardSinglePOCreate() {
                   <div className="bundle-control">
                     <Percent size={14} className="bundle-prefix-icon" />
                     <input
+                      autoComplete="off"
                       type="text"
                       value={shrinkage}
                       onChange={(e) => setShrinkage(e.target.value)}
@@ -895,6 +903,7 @@ export default function BundleCardSinglePOCreate() {
                   <div className="bundle-control">
                     <Hash size={14} className="bundle-prefix-icon" />
                     <input
+                      autoComplete="off"
                       type="text"
                       value={incm}
                       onChange={(e) => setIncm(e.target.value)}
@@ -924,6 +933,7 @@ export default function BundleCardSinglePOCreate() {
 
                     {/* Color Select */}
                     <select
+                      autoComplete="off"
                       className="bundle-row-select"
                       value={row.color}
                       onChange={(e) => updateDetailRow(index, 'color', e.target.value)}
@@ -938,6 +948,7 @@ export default function BundleCardSinglePOCreate() {
 
                     {/* Size Select (disabled if color not selected) */}
                     <select
+                      autoComplete="off"
                       className="bundle-row-select"
                       value={row.size}
                       disabled={!row.color}
@@ -955,6 +966,7 @@ export default function BundleCardSinglePOCreate() {
 
                     {/* Group Select */}
                     <select
+                      autoComplete="off"
                       className="bundle-row-select"
                       value={row.group}
                       onChange={(e) => updateDetailRow(index, 'group', e.target.value)}
@@ -1009,6 +1021,7 @@ export default function BundleCardSinglePOCreate() {
                   <div className="bundle-quantity-row" key={row.id}>
                     {/* Shade Select */}
                     <select
+                      autoComplete="off"
                       className="bundle-row-select"
                       value={row.shade}
                       onChange={(e) => updateQuantityRow(index, 'shade', e.target.value)}
@@ -1023,6 +1036,7 @@ export default function BundleCardSinglePOCreate() {
 
                     {/* Quantity Input */}
                     <input
+                      autoComplete="off"
                       type="number"
                       min="1"
                       className="bundle-row-input"
