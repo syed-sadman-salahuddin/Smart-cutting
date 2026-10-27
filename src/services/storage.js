@@ -17,6 +17,7 @@ export const KEYS = {
   ourReferences: 'st-our-references',
   buyers: 'st-buyers',
   cuttingPOs: 'st-cutting-pos',
+  bundleCards: 'st-bundle-cards',
   notifications: 'st-notifications',
 };
 

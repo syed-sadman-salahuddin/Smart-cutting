@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   BadgePlus,
   Building2,
@@ -163,6 +164,7 @@ function FilterSelectDropdown({
 }
 
 export default function CuttingPO() {
+  const navigate = useNavigate();
   const { items, add, update, remove } = useCollection(KEYS.cuttingPOs);
 
   // Filter mode toggle (true by default as in screenshot)
@@ -369,7 +371,7 @@ export default function CuttingPO() {
               <button
                 type="button"
                 className="cpo-btn cpo-btn-primary"
-                onClick={() => setFormModal({ mode: 'add', item: null })}
+                onClick={() => navigate('/cutting/po/create')}
               >
                 <BadgePlus size={16} />
                 <span>Add Cutting PO</span>

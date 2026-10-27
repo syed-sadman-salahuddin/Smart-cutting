@@ -21,6 +21,8 @@ import Buyer from './pages/Buyer';
 import FabricShades from './pages/FabricShades';
 import Groups from './pages/Groups';
 import CuttingPO from './pages/CuttingPO';
+import CuttingPOCreate from './pages/CuttingPOCreate';
+import BundleCardSinglePOCreate from './pages/BundleCardSinglePOCreate';
 import { KEYS, readJSON } from './services/storage';
 import { profileSeed } from './data/seedData';
 import { menuGroups } from './data/menuData';
@@ -34,6 +36,8 @@ function getPageTitle(pathname) {
   if (currentPath === '/general/shade') return 'ST Fabric Shades';
   if (currentPath === '/general/group') return 'ST Cutting Ratio Groups';
   if (currentPath === '/cutting/po') return 'ST Cutting POs';
+  if (currentPath === '/cutting/po/create') return 'ST Create Cutting PO';
+  if (currentPath === '/cutting/bundle-card/single-po/create') return 'ST Bundle Card';
   if (currentPath === '/notifications') return 'ST Notifications';
   if (currentPath === '/superuser/edit' || currentPath === '/profile/edit') return 'ST Edit Profile';
   if (currentPath === '/superuser' || currentPath === '/profile') {
@@ -111,6 +115,12 @@ export default function App() {
             <Route path="/po/buyer/" element={<Buyer />} />
             <Route path="/cutting/po" element={<CuttingPO />} />
             <Route path="/cutting/po/" element={<CuttingPO />} />
+            <Route path="/cutting/po/create" element={<CuttingPOCreate />} />
+            <Route path="/cutting/po/create/" element={<CuttingPOCreate />} />
+            <Route path="/cutting/bundle-card" element={<BundleCardSinglePOCreate />} />
+            <Route path="/cutting/bundle-card/" element={<BundleCardSinglePOCreate />} />
+            <Route path="/cutting/bundle-card/single-po/create" element={<BundleCardSinglePOCreate />} />
+            <Route path="/cutting/bundle-card/single-po/create/" element={<BundleCardSinglePOCreate />} />
             <Route path="*" element={<PlaceholderPage />} />
           </Route>
         </Route>

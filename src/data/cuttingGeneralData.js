@@ -1,0 +1,30 @@
+export const CUTTING_TABLES = [
+  'Table 01',
+  'Table 02',
+  'Table 03',
+  'Table 04',
+  'Table 05',
+  'Table 06',
+  'Table 07',
+  'Table 08',
+  'Table 09',
+  'Table 10',
+];
+
+export const SEWING_LINES = [
+  'Line 01',
+  'Line 02',
+  'Line 03',
+  'Line 04',
+  'Line 05',
+  'Line 06',
+  'Line 07',
+  'Line 08',
+  'Line 09',
+  'Line 10',
+  'Line 11',
+  'Line 12',
+  'Line 13',
+  'Line 14',
+  'Line 15',
+];
