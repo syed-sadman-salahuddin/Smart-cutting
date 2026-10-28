@@ -203,10 +203,10 @@ export default function BundleCardMultiPOCreate() {
   };
 
   // Form State: Card 2 (Cut Number & Quantity)
-  const [previousCutNumber] = useState('N/A');
-  const [nextCutNumber, setNextCutNumber] = useState('1');
-  const [maxQuantityPerBundle, setMaxQuantityPerBundle] = useState('15');
-  const [shrinkage, setShrinkage] = useState('1.111');
+  const previousCutNumber = '';
+  const [nextCutNumber, setNextCutNumber] = useState('');
+  const [maxQuantityPerBundle, setMaxQuantityPerBundle] = useState('');
+  const [shrinkage, setShrinkage] = useState('');
   const [incm, setIncm] = useState('');
 
   // Form State: Bottom Card (Bundle Card Details: PO / Color / Size / Shade / Quantity)
@@ -218,7 +218,7 @@ export default function BundleCardMultiPOCreate() {
       size: '',
       group: '',
       shade: '',
-      quantity: '100',
+      quantity: '',
     },
   ]);
 
@@ -244,7 +244,7 @@ export default function BundleCardMultiPOCreate() {
         size: '',
         group: '',
         shade: '',
-        quantity: '100',
+        quantity: '',
       },
     ]);
   };
@@ -260,7 +260,7 @@ export default function BundleCardMultiPOCreate() {
   }, [multiRows]);
 
   const totalBundles = useMemo(() => {
-    const max = Number(maxQuantityPerBundle) || 1;
+    const max = Number(maxQuantityPerBundle);
     if (max <= 0) return 0;
     return multiRows.reduce((sum, row) => {
       const q = Number(row.quantity) || 0;
@@ -320,7 +320,7 @@ export default function BundleCardMultiPOCreate() {
       cuttingTable: cuttingTable || 'Table 01',
       sewingLine: sewingLine || 'Line 01',
       parts: selectedPartNames,
-      previousCutNumber,
+      previousCutNumber: previousCutNumber || 'N/A',
       nextCutNumber: Number(nextCutNumber),
       maxQuantityPerBundle: Number(maxQuantityPerBundle),
       shrinkage: shrinkage || '0',
@@ -349,7 +349,7 @@ export default function BundleCardMultiPOCreate() {
         size: '',
         group: '',
         shade: '',
-        quantity: '100',
+        quantity: '',
       },
     ]);
   };

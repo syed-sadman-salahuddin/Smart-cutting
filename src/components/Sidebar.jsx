@@ -157,7 +157,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                     <div className="menu-group" key={item.id}>
                       <button
                         type="button"
-                        className={`nav-link${isOpen ? ' active' : ''}`}
+                        className="nav-link"
                         aria-expanded={isOpen}
                         onClick={() => toggleMenu(item.id)}
                       >
@@ -175,8 +175,9 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                               <NavLink
                                 key={child.path}
                                 to={child.path}
+                                end
                                 className={({ isActive }) =>
-                                  `submenu-link${isActive || normPath === normChildPath ? ' active' : ''}`
+                                  `submenu-link${isActive && normPath === normChildPath ? ' active' : ''}`
                                 }
                               >
                                 {showItem(child.label)}

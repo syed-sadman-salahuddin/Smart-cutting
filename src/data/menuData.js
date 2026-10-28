@@ -14,24 +14,6 @@ export const menuGroups = [
     items: [{ id: 'overview', label: 'Overview', icon: LayoutDashboard, path: '/' }],
   },
   {
-    title: 'UI Elements',
-    items: [
-      {
-        id: 'components',
-        label: 'Components',
-        icon: Box,
-        children: [
-          { label: 'Form', path: '/components/form-template/' },
-          { label: 'Table', path: '/components/table-template/' },
-          { label: 'New Table', path: '/components/new-table-template/' },
-          { label: 'Button', path: '/components/button-template/' },
-          { label: 'Badges', path: '/components/badges-template/' },
-          { label: 'Test Table', path: '/components/test-table-template/' },
-        ],
-      },
-    ],
-  },
-  {
     title: 'Administration',
     items: [
       {
