@@ -682,6 +682,15 @@ html.dark .cpo-table tbody tr:hover .cpo-sticky-right {
   background: #232d3d;
 }
 
+@media (max-width: 639px) {
+  .cpo-sticky-right {
+    position: static;
+    right: auto;
+    z-index: auto;
+    box-shadow: none;
+  }
+}
+
 /* Index Chip */
 .cpo-index {
   display: inline-flex;

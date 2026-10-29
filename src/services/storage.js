@@ -9,6 +9,8 @@ export const KEYS = {
   profile: 'st-profile',
   dashboard: 'st-dashboard',
   parts: 'st-parts',
+  departments: 'st-departments',
+  designations: 'st-designations',
   shades: 'st-shades',
   groups: 'st-groups',
   sizes: 'st-sizes',
@@ -17,6 +19,8 @@ export const KEYS = {
   ourReferences: 'st-our-references',
   buyers: 'st-buyers',
   cuttingPOs: 'st-cutting-pos',
+  cuttingTables: 'st-cutting-tables',
+  sewingLines: 'st-sewing-lines',
   bundleCards: 'st-bundle-cards',
   notifications: 'st-notifications',
 };

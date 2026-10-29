@@ -1,0 +1,56 @@
+.designation-entity {
+  gap: 8px;
+}
+
+.designation-entity .po-entity-name {
+  white-space: nowrap;
+}
+
+.designation-short-name {
+  color: #9ca3af;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+html.dark .designation-short-name {
+  color: #9ca3af;
+}
+
+.designation-description-wrap {
+  align-items: flex-start;
+  min-height: 58px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+.designation-description-wrap > svg {
+  margin-top: 2px;
+}
+
+.designation-description {
+  width: 100%;
+  min-height: 40px;
+  resize: vertical;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-body);
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+.designation-description::placeholder {
+  color: #9ca3af;
+}
+
+html.dark .designation-description {
+  color: #f3f4f6;
+}
+
+.designation-description-count {
+  align-self: flex-end;
+  margin-top: -2px;
+  color: #9ca3af;
+  font-size: 12px;
+}

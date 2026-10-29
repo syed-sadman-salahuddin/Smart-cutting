@@ -18,8 +18,14 @@ import Sizes from './pages/Sizes';
 import PurchaseOrders from './pages/PurchaseOrders';
 import OurReference from './pages/OurReference';
 import Buyer from './pages/Buyer';
+import Departments from './pages/Departments';
+import Designations from './pages/Designations';
 import FabricShades from './pages/FabricShades';
 import Groups from './pages/Groups';
+import CuttingTables from './pages/CuttingTables';
+import CuttingTableCreate from './pages/CuttingTableCreate';
+import SewingLines from './pages/SewingLines';
+import SewingLineCreate from './pages/SewingLineCreate';
 import CuttingPO from './pages/CuttingPO';
 import CuttingPOCreate from './pages/CuttingPOCreate';
 import BundleCardList from './pages/BundleCardList';
@@ -37,6 +43,12 @@ function getPageTitle(pathname) {
   if (currentPath === '/general/part') return 'ST Cutting Parts';
   if (currentPath === '/general/shade') return 'ST Fabric Shades';
   if (currentPath === '/general/group') return 'ST Cutting Ratio Groups';
+  if (currentPath === '/general/table') return 'ST Cutting Tables';
+  if (currentPath === '/general/table/create') return 'ST Create Cutting Table';
+  if (currentPath.startsWith('/general/table/edit')) return 'ST Edit Cutting Table';
+  if (currentPath === '/general/line') return 'ST Sewing Lines';
+  if (currentPath === '/general/line/create') return 'ST Create Sewing Line';
+  if (currentPath.startsWith('/general/line/edit')) return 'ST Edit Sewing Line';
   if (currentPath === '/cutting/po') return 'ST Cutting POs';
   if (currentPath === '/cutting/po/create') return 'ST Create Cutting PO';
   if (currentPath === '/cutting/bundle-card') return 'ST Bundle Cards';
@@ -102,10 +114,26 @@ export default function App() {
             <Route path="/notifications/" element={<Notifications />} />
             <Route path="/general/part" element={<Parts />} />
             <Route path="/general/part/" element={<Parts />} />
+            <Route path="/company/department" element={<Departments />} />
+            <Route path="/company/department/" element={<Departments />} />
+            <Route path="/company/designation" element={<Designations />} />
+            <Route path="/company/designation/" element={<Designations />} />
             <Route path="/general/shade" element={<FabricShades />} />
             <Route path="/general/shade/" element={<FabricShades />} />
             <Route path="/general/group" element={<Groups />} />
             <Route path="/general/group/" element={<Groups />} />
+            <Route path="/general/table" element={<CuttingTables />} />
+            <Route path="/general/table/" element={<CuttingTables />} />
+            <Route path="/general/table/create" element={<CuttingTableCreate />} />
+            <Route path="/general/table/create/" element={<CuttingTableCreate />} />
+            <Route path="/general/table/edit/:id" element={<CuttingTableCreate />} />
+            <Route path="/general/table/edit/:id/" element={<CuttingTableCreate />} />
+            <Route path="/general/line" element={<SewingLines />} />
+            <Route path="/general/line/" element={<SewingLines />} />
+            <Route path="/general/line/create" element={<SewingLineCreate />} />
+            <Route path="/general/line/create/" element={<SewingLineCreate />} />
+            <Route path="/general/line/edit/:id" element={<SewingLineCreate />} />
+            <Route path="/general/line/edit/:id/" element={<SewingLineCreate />} />
             <Route path="/po/size" element={<Sizes />} />
             <Route path="/po/size/" element={<Sizes />} />
             <Route path="/po/color" element={<Colors />} />

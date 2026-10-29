@@ -907,6 +907,15 @@ html.dark .bcl-table tbody tr:hover .bcl-sticky-right {
   background-color: #242e3e;
 }
 
+@media (max-width: 639px) {
+  .bcl-sticky-right {
+    position: static;
+    right: auto;
+    z-index: auto;
+    box-shadow: none;
+  }
+}
+
 /* Index Chip (#) */
 .bcl-index-chip {
   display: inline-flex;

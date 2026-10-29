@@ -1,0 +1,38 @@
+.department-description-wrap {
+  align-items: flex-start;
+  min-height: 58px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+
+.department-description-wrap > svg {
+  margin-top: 2px;
+}
+
+.department-description {
+  width: 100%;
+  min-height: 40px;
+  resize: vertical;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-body);
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+.department-description::placeholder {
+  color: #9ca3af;
+}
+
+html.dark .department-description {
+  color: #f3f4f6;
+}
+
+.department-description-count {
+  align-self: flex-end;
+  margin-top: -2px;
+  color: #9ca3af;
+  font-size: 12px;
+}

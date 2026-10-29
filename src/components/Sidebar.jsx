@@ -35,9 +35,10 @@ function getActiveMenu(pathname) {
     menuGroups
       .flatMap((group) => group.items)
       .find((item) =>
-        item.children?.some(
-          (child) => (child.path.replace(/\/+$/, '') || '/') === norm
-        )
+        item.children?.some((child) => {
+          const childNorm = child.path.replace(/\/+$/, '') || '/';
+          return norm === childNorm || (childNorm !== '/' && norm.startsWith(`${childNorm}/`));
+        })
       )?.id || null
   );
 }
@@ -176,9 +177,12 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                                 key={child.path}
                                 to={child.path}
                                 end
-                                className={({ isActive }) =>
-                                  `submenu-link${isActive && normPath === normChildPath ? ' active' : ''}`
-                                }
+                                className={({ isActive }) => {
+                                  const isCurrentOrSub =
+                                    (isActive && normPath === normChildPath) ||
+                                    (normChildPath !== '/' && normPath.startsWith(`${normChildPath}/`));
+                                  return `submenu-link${isCurrentOrSub ? ' active' : ''}`;
+                                }}
                               >
                                 {showItem(child.label)}
                               </NavLink>
