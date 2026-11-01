@@ -1,0 +1,461 @@
+/* =====================================================================
+   Permissions Module Styles
+   Matches screenshot demo design and browser inspector styles
+   Classes start with "perm-"
+   ===================================================================== */
+
+/* Keep the reference page's violet accent scoped to this page. */
+.perm-page {
+  --color-primary: #8b5cf6;
+  --color-secondary: #7c3aed;
+  --color-primary-rgb: 139 92 246;
+  --color-secondary-rgb: 124 58 237;
+  --input-focus-ring: rgba(139, 92, 246, 0.2);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.perm-page .card-shell {
+  min-height: 0;
+}
+
+.permissions-main-content {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.permissions-main-content .main-inner {
+  min-height: 0;
+  padding-bottom: 0;
+}
+
+.permissions-main-content .app-footer {
+  margin-top: 0;
+}
+
+/* ---------- Outer Container ---------- */
+.perm-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 12px;
+}
+
+@media (min-width: 640px) {
+  .perm-body {
+    padding: 24px;
+  }
+}
+
+/* ---------- Main Inner Card Panel ---------- */
+.perm-panel {
+  background: var(--surface-raised, #ffffff);
+  border: 1px solid var(--border-subtle, #e5e7eb);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+html.dark .perm-panel {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+/* ---------- Panel Header ---------- */
+.perm-panel-header {
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border-subtle, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+html.dark .perm-panel-header {
+  border-bottom-color: #374151;
+}
+
+.perm-panel-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.perm-panel-header-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgb(var(--color-primary-rgb) / 0.1);
+  color: var(--color-primary);
+}
+
+.perm-panel-header-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-strong, #111827);
+}
+
+html.dark .perm-panel-header-title {
+  color: #ffffff;
+}
+
+.perm-panel-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+html.dark .perm-panel-badge {
+  background: #374151;
+  color: #9ca3af;
+}
+
+/* ---------- Panel Content Area ---------- */
+.perm-panel-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: 6px 8px 8px;
+  background: var(--surface-raised, #ffffff);
+}
+
+html.dark .perm-panel-content {
+  background: #1f2937;
+}
+
+/* ---------- Search Bar ---------- */
+.perm-search-wrap {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+
+.perm-search-box {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 38px;
+  border-radius: 4px;
+}
+
+.perm-search-icon {
+  position: absolute;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: #9ca3af;
+}
+
+html.dark .perm-search-icon {
+  color: #9ca3af;
+}
+
+.perm-search-input {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  padding: 8px 36px 8px 34px;
+  font-size: 12px;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.perm-search-input::placeholder {
+  color: #9ca3af;
+}
+
+.perm-search-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--input-focus-ring, rgba(6, 182, 212, 0.2));
+}
+
+html.dark .perm-search-input {
+  background: #1f2937;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+html.dark .perm-search-input::placeholder {
+  color: #9ca3af;
+}
+
+html.dark .perm-search-input:focus {
+  border-color: var(--color-primary);
+}
+
+.perm-search-clear {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #9ca3af;
+  border-radius: 4px;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.perm-search-clear:hover {
+  color: #111827;
+  background: #f3f4f6;
+}
+
+html.dark .perm-search-clear:hover {
+  color: #f3f4f6;
+  background: #374151;
+}
+
+/* ---------- Groups Container ---------- */
+.perm-groups-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+  transition: opacity 0.15s ease;
+  padding: 0 4px 0 0;
+}
+
+/* Custom scrollbar */
+.perm-groups-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.perm-groups-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.perm-groups-container::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 9999px;
+}
+
+.perm-groups-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7);
+}
+
+/* ---------- Each Group Card ---------- */
+.perm-group-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #ffffff;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+html.dark .perm-group-card {
+  border-color: #374151;
+  background: #1f2937;
+}
+
+/* Group Card Header */
+.perm-group-header {
+  background: #f9fafb;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+html.dark .perm-group-header {
+  background: rgba(17, 24, 39, 0.5);
+  border-bottom-color: #374151;
+}
+
+.perm-group-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.perm-group-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+html.dark .perm-group-title {
+  color: #e5e7eb;
+}
+
+.perm-group-count {
+  font-size: 12px;
+  font-weight: 400;
+  color: #6b7280;
+}
+
+html.dark .perm-group-count {
+  color: #9ca3af;
+}
+
+/* ---------- Group Grid of Permissions ---------- */
+.perm-group-grid {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .perm-group-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .perm-group-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .perm-group-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- Individual Permission Item Card ---------- */
+.perm-item-card {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid rgb(var(--color-primary-rgb) / 0.4);
+  background: var(--surface-raised, #ffffff);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 44px;
+}
+
+html.dark .perm-item-card {
+  background: #1f2937;
+  border-color: rgb(var(--color-primary-rgb) / 0.35);
+}
+
+.perm-item-card:hover {
+  border-color: var(--color-primary);
+  background: rgb(var(--color-primary-rgb) / 0.03);
+  box-shadow: 0 2px 8px -1px rgb(var(--color-primary-rgb) / 0.15);
+  transform: translateY(-1px);
+}
+
+html.dark .perm-item-card:hover {
+  background: rgb(var(--color-primary-rgb) / 0.08);
+}
+
+.perm-item-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.perm-item-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+}
+
+.perm-item-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+html.dark .perm-item-name {
+  color: #f3f4f6;
+}
+
+.perm-item-codename {
+  font-size: 10px;
+  font-weight: 400;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+html.dark .perm-item-codename {
+  color: #9ca3af;
+}
+
+/* ---------- Empty State ---------- */
+.perm-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.perm-empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgb(var(--color-primary-rgb) / 0.1);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.perm-empty-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-strong, #111827);
+  margin-bottom: 4px;
+}
+
+html.dark .perm-empty-title {
+  color: #f3f4f6;
+}
+
+.perm-empty-desc {
+  font-size: 13px;
+  color: #6b7280;
+  max-width: 320px;
+}
+
+html.dark .perm-empty-desc {
+  color: #9ca3af;
+}

@@ -19,6 +19,10 @@ import PurchaseOrders from './pages/PurchaseOrders';
 import OurReference from './pages/OurReference';
 import Buyer from './pages/Buyer';
 import Departments from './pages/Departments';
+import Companies from './pages/Companies';
+import CompanyCreate from './pages/CompanyCreate';
+import Permissions from './pages/Permissions';
+import Roles from './pages/Roles';
 import Designations from './pages/Designations';
 import FabricShades from './pages/FabricShades';
 import Groups from './pages/Groups';
@@ -54,6 +58,11 @@ function getPageTitle(pathname) {
   if (currentPath === '/cutting/bundle-card') return 'ST Bundle Cards';
   if (currentPath === '/cutting/bundle-card/single-po/create' || currentPath === '/cutting/bundle-card/multi-po/create') return 'ST Bundle Card';
   if (currentPath === '/notifications') return 'ST Notifications';
+  if (currentPath === '/company/list') return 'ST Companies';
+  if (currentPath === '/company/create') return 'ST Create Company';
+  if (currentPath.startsWith('/company/') && currentPath.endsWith('/edit')) return 'ST Edit Company';
+  if (currentPath === '/roles') return 'ST Roles';
+  if (currentPath === '/roles/permissions') return 'ST Permissions';
   if (currentPath === '/superuser/edit' || currentPath === '/profile/edit') return 'ST Edit Profile';
   if (currentPath === '/superuser' || currentPath === '/profile') {
     const profile = readJSON(KEYS.profile, profileSeed);
@@ -114,6 +123,16 @@ export default function App() {
             <Route path="/notifications/" element={<Notifications />} />
             <Route path="/general/part" element={<Parts />} />
             <Route path="/general/part/" element={<Parts />} />
+            <Route path="/roles" element={<Roles />} />
+            <Route path="/roles/" element={<Roles />} />
+            <Route path="/roles/permissions" element={<Permissions />} />
+            <Route path="/roles/permissions/" element={<Permissions />} />
+            <Route path="/company/list" element={<Companies />} />
+            <Route path="/company/list/" element={<Companies />} />
+            <Route path="/company/create" element={<CompanyCreate />} />
+            <Route path="/company/create/" element={<CompanyCreate />} />
+            <Route path="/company/:id/edit" element={<CompanyCreate />} />
+            <Route path="/company/:id/edit/" element={<CompanyCreate />} />
             <Route path="/company/department" element={<Departments />} />
             <Route path="/company/department/" element={<Departments />} />
             <Route path="/company/designation" element={<Designations />} />

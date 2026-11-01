@@ -15,6 +15,9 @@ import { cuttingPOsSeed } from '../data/cuttingPOData';
 import { cuttingTablesSeed } from '../data/cuttingTablesData';
 import { sewingLinesSeed } from '../data/sewingLinesData';
 import { bundleCardsSeed } from '../data/bundleCardsData';
+import { companiesSeed } from '../data/companiesData';
+import { rolesSeed } from '../data/rolesData';
+import { permissionsGroupsSeed } from '../data/permissionsData';
 
 const DB_VERSION = 4;
 
@@ -43,6 +46,9 @@ export function initDatabase() {
   ensure(KEYS.cuttingTables, cuttingTablesSeed);
   ensure(KEYS.sewingLines, sewingLinesSeed);
   ensure(KEYS.bundleCards, bundleCardsSeed);
+  ensure(KEYS.companies, companiesSeed);
+  ensure(KEYS.roles, rolesSeed);
+  ensure(KEYS.permissions, permissionsGroupsSeed);
 
   if (readJSON(KEYS.dbVersion, 0) !== DB_VERSION) {
     writeJSON(KEYS.profile, profileSeed);

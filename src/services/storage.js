@@ -22,7 +22,10 @@ export const KEYS = {
   cuttingTables: 'st-cutting-tables',
   sewingLines: 'st-sewing-lines',
   bundleCards: 'st-bundle-cards',
+  companies: 'st-companies',
   notifications: 'st-notifications',
+  roles: 'st-roles',
+  permissions: 'st-permissions',
 };
 
 export const STORAGE_EVENT = 'st-storage';
