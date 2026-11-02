@@ -34,13 +34,15 @@ function getActiveMenu(pathname) {
   return (
     menuGroups
       .flatMap((group) => group.items)
-      .find((item) =>
-        item.children?.some((child) => {
-          const childNorm = child.path.replace(/\/+$/, '') || '/';
-          return norm === childNorm || (childNorm !== '/' && norm.startsWith(`${childNorm}/`));
-        })
-      )?.id || null
+      .find((item) => getActiveChildPath(norm, item.children))?.id || null
   );
+}
+
+function getActiveChildPath(pathname, children = []) {
+  return children
+    .map((child) => child.path.replace(/\/+$/, '') || '/')
+    .filter((childPath) => pathname === childPath || (childPath !== '/' && pathname.startsWith(`${childPath}/`)))
+    .sort((a, b) => b.length - a.length)[0] || null;
 }
 
 export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onCloseMobile }) {
@@ -138,6 +140,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
               <div className="nav-items">
                 {group.items.map((item) => {
                   const Icon = item.icon;
+                  const normPath = pathname.replace(/\/+$/, '') || '/';
 
                   if (!item.children) {
                     return (
@@ -154,6 +157,7 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                   }
 
                   const isOpen = openMenu === item.id;
+                  const activeChildPath = getActiveChildPath(normPath, item.children);
                   return (
                     <div className="menu-group" key={item.id}>
                       <button
@@ -170,19 +174,13 @@ export default function Sidebar({ collapsed, mobileOpen, onToggleCollapse, onClo
                       {isOpen && (
                         <div className="submenu sidebar-text">
                           {item.children.map((child) => {
-                            const normPath = pathname.replace(/\/+$/, '') || '/';
                             const normChildPath = child.path.replace(/\/+$/, '') || '/';
                             return (
                               <NavLink
                                 key={child.path}
                                 to={child.path}
                                 end
-                                className={({ isActive }) => {
-                                  const isCurrentOrSub =
-                                    (isActive && normPath === normChildPath) ||
-                                    (normChildPath !== '/' && normPath.startsWith(`${normChildPath}/`));
-                                  return `submenu-link${isCurrentOrSub ? ' active' : ''}`;
-                                }}
+                                className={`submenu-link${normChildPath === activeChildPath ? ' active' : ''}`}
                               >
                                 {showItem(child.label)}
                               </NavLink>

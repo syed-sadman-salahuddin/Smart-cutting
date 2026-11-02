@@ -24,6 +24,8 @@ import CompanyCreate from './pages/CompanyCreate';
 import Permissions from './pages/Permissions';
 import Roles from './pages/Roles';
 import Designations from './pages/Designations';
+import Employees from './pages/Employees';
+import EmployeeCreate from './pages/EmployeeCreate';
 import FabricShades from './pages/FabricShades';
 import Groups from './pages/Groups';
 import CuttingTables from './pages/CuttingTables';
@@ -61,6 +63,7 @@ function getPageTitle(pathname) {
   if (currentPath === '/company/list') return 'ST Companies';
   if (currentPath === '/company/create') return 'ST Create Company';
   if (currentPath.startsWith('/company/') && currentPath.endsWith('/edit')) return 'ST Edit Company';
+  if (currentPath === '/employee/create') return 'ST Create Employee';
   if (currentPath === '/roles') return 'ST Roles';
   if (currentPath === '/roles/permissions') return 'ST Permissions';
   if (currentPath === '/superuser/edit' || currentPath === '/profile/edit') return 'ST Edit Profile';
@@ -137,6 +140,10 @@ export default function App() {
             <Route path="/company/department/" element={<Departments />} />
             <Route path="/company/designation" element={<Designations />} />
             <Route path="/company/designation/" element={<Designations />} />
+            <Route path="/employee" element={<Employees />} />
+            <Route path="/employee/" element={<Employees />} />
+            <Route path="/employee/create" element={<EmployeeCreate />} />
+            <Route path="/employee/create/" element={<EmployeeCreate />} />
             <Route path="/general/shade" element={<FabricShades />} />
             <Route path="/general/shade/" element={<FabricShades />} />
             <Route path="/general/group" element={<Groups />} />

@@ -23,6 +23,7 @@ export const KEYS = {
   sewingLines: 'st-sewing-lines',
   bundleCards: 'st-bundle-cards',
   companies: 'st-companies',
+  employees: 'st-employees',
   notifications: 'st-notifications',
   roles: 'st-roles',
   permissions: 'st-permissions',

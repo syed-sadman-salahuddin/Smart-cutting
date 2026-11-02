@@ -16,6 +16,7 @@ import { cuttingTablesSeed } from '../data/cuttingTablesData';
 import { sewingLinesSeed } from '../data/sewingLinesData';
 import { bundleCardsSeed } from '../data/bundleCardsData';
 import { companiesSeed } from '../data/companiesData';
+import { employeesSeed } from '../data/employeesData';
 import { rolesSeed } from '../data/rolesData';
 import { permissionsGroupsSeed } from '../data/permissionsData';
 
@@ -47,6 +48,7 @@ export function initDatabase() {
   ensure(KEYS.sewingLines, sewingLinesSeed);
   ensure(KEYS.bundleCards, bundleCardsSeed);
   ensure(KEYS.companies, companiesSeed);
+  ensure(KEYS.employees, employeesSeed);
   ensure(KEYS.roles, rolesSeed);
   ensure(KEYS.permissions, permissionsGroupsSeed);
 

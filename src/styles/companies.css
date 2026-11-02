@@ -460,6 +460,10 @@ html.dark .co-checkbox-text { color: #e5e7eb; }
 .co-textarea-wrap {
   position: relative;
   display: flex;
+  width: 100%;
+  height: 82px;
+  min-height: 82px;
+  max-height: 82px;
   align-items: flex-start;
   gap: 10px;
   padding: 10px 12px;
@@ -480,6 +484,12 @@ html.dark .co-textarea-wrap {
 .co-textarea-icon { flex-shrink: 0; margin-top: 2px; }
 .co-textarea {
   flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 60px;
+  min-height: 60px;
+  max-height: 60px;
+  overflow-y: auto;
   resize: none;
   border: 0;
   outline: 0;
@@ -492,9 +502,9 @@ html.dark .co-textarea-wrap {
 .co-textarea::placeholder { color: #9ca3af; }
 html.dark .co-textarea { color: #f3f4f6; }
 
-.co-field-full .co-textarea-wrap,
-.co-field-full .co-field {
-  padding: 0 20px 20px;
+.co-form-grid .co-field-full {
+  min-width: 0;
+  padding: 0;
 }
 
 .co-textarea-footer {
@@ -511,11 +521,6 @@ html.dark .co-textarea-hint { color: #9ca3af; }
 .co-textarea-count {
   font-size: 12px;
   color: #9ca3af;
-}
-
-/* --- Fix field-full padding --- */
-.co-form-grid .co-field-full {
-  padding: 0;
 }
 
 /* ---------- Logo upload zone ---------- */
